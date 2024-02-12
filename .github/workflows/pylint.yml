@@ -18,6 +18,13 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements_docs.txt
+
+    - name: Authenticate with GitHub
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Use the built-in GitHub token provided by GitHub Actions
+      run: |
+        git config --global user.email "you@example.com"
+        git config --global user.name "Your Name"
     - name: Create mkdocs
       run: |
         mkdocs gh-deploy
