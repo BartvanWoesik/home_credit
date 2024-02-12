@@ -1,6 +1,7 @@
 site_name: Home Credit - Credit Risk Model Stability
 nav:
   - Home: index.md
+  - Data: report.md
 theme:
   name: material
   features:
