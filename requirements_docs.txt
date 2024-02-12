@@ -1,0 +1,3 @@
+mkdocs
+mkdocs-git-authors-plugin
+mkdocs-material
