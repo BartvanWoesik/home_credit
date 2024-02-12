@@ -11,3 +11,6 @@ Key objectives:
 
 Note: 
  Data of this project can be found on the Kaggle pages, and will not be stored in the git repo due to size limitations. 
+
+
+This project will take 4 weeks to complete.
