@@ -27,5 +27,5 @@ jobs:
         git config --global user.name "BartvanWoesik"
     - name: Create mkdocs
       run: |
-        mkdocs gh-deploy
+        mkdocs gh-deploy --token $GH_TOKEN
 
