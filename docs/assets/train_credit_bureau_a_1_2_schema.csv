@@ -1,0 +1,80 @@
+Variable,Description
+case_id, Id to merge on
+annualeffectiverate_199L,Interest rate of the closed contracts.
+annualeffectiverate_63L,Interest rate for the active contracts.
+classificationofcontr_13M,Classificiation of the active contract.
+classificationofcontr_400M,Classificiation of the closed contract.
+contractst_545M,Contract status.
+contractst_964M,Contract status of terminated credit contract.
+contractsum_5085717L,Sum of other contract values.
+credlmt_230A,Credit limit of the closed credit contracts from credit bureau.
+credlmt_935A,Credit limit for active loan.
+dateofcredend_289D,End date of an active credit contract.
+dateofcredend_353D,End date of a closed credit contract.
+dateofcredstart_181D,Date when the credit contract was closed.
+dateofcredstart_739D,Start date of a closed credit contract.
+dateofrealrepmt_138D,Date of credit's closure (contract termination date).
+debtoutstand_525A,Outstanding amount of existing contract.
+debtoverdue_47A,Amount that is currently past due on a client's existing credit contract.
+description_351M,Categorization of clients by credit bureau.
+dpdmax_139P,Maximal days past due for active contract.
+dpdmax_757P,Maximum days past due for a closed contract.
+dpdmaxdatemonth_442T,Max DPD occurrence month for terminated contracts from credit bureau data.
+dpdmaxdatemonth_89T,Month when maximum days past due occurred on the active contract with the credit bureau.
+dpdmaxdateyear_596T,Year when maximum Days Past Due (DPD) occurred for the active contract.
+dpdmaxdateyear_896T,Year of maximum Days Past Due of closed contract obtained from Credit Bureau.
+financialinstitution_382M,Name of financial institution that is linked to a closed contract.
+financialinstitution_591M,Financial institution name of the active contract.
+instlamount_768A,Instalment amount for the active contract in credit bureau.
+instlamount_852A,Instalment amount for closed contract.
+interestrate_508L,Interest rate for a closed contract in the credit bureau.
+lastupdate_1112D,Date of last update for an active contract from credit bureau.
+lastupdate_388D,Date of last update for a closed contract in the credit bureau.
+monthlyinstlamount_332A,Monthly instalment amount for active contract.
+monthlyinstlamount_674A,Monthly amount of instalment payment on a closed contract.
+nominalrate_281L,Interest rate of the active contract.
+nominalrate_498L,Interest rate for closed contract.
+num_group1, 0
+numberofcontrsvalue_258L,Number of active contracts in credit bureau.
+numberofcontrsvalue_358L,Number of closed credit contracts.
+numberofinstls_229L,Number of instalments on closed contract.
+numberofinstls_320L,Number of instalments of the active contract.
+numberofoutstandinstls_520L,Number of outstanding instalment for closed contract.
+numberofoutstandinstls_59L,Number of outstanding instalments for the active contracts.
+numberofoverdueinstlmax_1039L,Number of outstanding instalments for active contracts.
+numberofoverdueinstlmax_1151L,Maximum number of past due installments for a closed contract.
+numberofoverdueinstlmaxdat_148D,Date of maximum number of past due instalments for the closed contract.
+numberofoverdueinstlmaxdat_641D,Date of maximum number of past due instalments for the active contract.
+numberofoverdueinstls_725L,Maximum number of past due instalments for an active contract.
+numberofoverdueinstls_834L,Number of past due instalments for a closed contract.
+outstandingamount_354A,Outstanding amount for closed credit contract in credit bureau.
+outstandingamount_362A,Active contract's outstanding amount.
+overdueamount_31A,Past due amount for a closed contract.
+overdueamount_659A,Past due amount for active contract.
+overdueamountmax2_14A,Maximal past due amount for an active contract.
+overdueamountmax2_398A,Maximal overdue amount for a closed contract.
+overdueamountmax2date_1002D,Date of maximal past due amount for a closed contract
+overdueamountmax2date_1142D,Date of maximal past due amount for an active contract.
+overdueamountmax_155A,Maximal past due amount for active contract.
+overdueamountmax_35A,Maximal past due amount for a closed contract.
+overdueamountmaxdatemonth_284T,Month when the maximum past due amount occurred for a closed contract.
+overdueamountmaxdatemonth_365T,Month when maximum past due amount occurred for an active contract.
+overdueamountmaxdateyear_2T,Year when the maximum past due amount occurred for active contracts.
+overdueamountmaxdateyear_994T,Year when maximum past due amount occurred for closed contract.
+periodicityofpmts_1102L,Frequency of instalments for a closed contract.
+periodicityofpmts_837L,Frequency of instalments for an active contract.
+prolongationcount_1120L,Count of prolongations on terminated contract according to credit bureau.
+prolongationcount_599L,Count of active contract prolongations.
+purposeofcred_426M,Purpose of credit for active contract.
+purposeofcred_874M,Purpose of credit on a closed contract.
+refreshdate_3813885D,Date when the credit bureau's public sources have been last updated.
+residualamount_488A,Residual amount of a closed contract.
+residualamount_856A,Residual amount for the active contract.
+subjectrole_182M,Subject role in active credit contract.
+subjectrole_93M,Subject role in closed credit contract.
+totalamount_6A,Total amount of closed contracts.
+totalamount_996A,Total amount of active contracts in the credit bureau.
+totaldebtoverduevalue_178A,Total amount of past due debt on active contracts.
+totaldebtoverduevalue_718A,Total overdue debt amount for closed credit contracts.
+totaloutstanddebtvalue_39A,Total outstanding debt for active contracts in the credit bureau.
+totaloutstanddebtvalue_668A,Total outstanding debt for the closed contracts in the credit bureau.

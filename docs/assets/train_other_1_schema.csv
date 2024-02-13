@@ -1,0 +1,8 @@
+Variable,Description
+case_id, Id to merge on
+amtdebitincoming_4809443A,Incoming debit card transactions amount.
+amtdebitoutgoing_4809440A,Outgoing debit card transactions amount.
+amtdepositbalance_4809441A,Deposit balance of client.
+amtdepositincoming_4809444A,Amount of incoming deposits to client's account.
+amtdepositoutgoing_4809442A,Amount of outgoing deposits from client's account.
+num_group1, 0
