@@ -33,6 +33,12 @@ nav:
       - 2 : train_person_2.md
     - static:
       - 0 : train_static_0_0.md
+      - 1 : train_static_0_1.md
+      - 2 : train_static_cb_0.md
+    - tax_registry:
+      - 1: train_tax_registry_a_1.md
+      - 2: train_tax_registry_b_1.md
+      - 3: train_tax_registry_c_1.md
 theme:
   name: material
   features:
