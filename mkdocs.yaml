@@ -1,7 +1,38 @@
 site_name: Home Credit - Credit Risk Model Stability
 nav:
   - Home: index.md
-  - Data: report.md
+  - Raw Data: 
+    - applprev:
+      - 1_0: train_applprev_1_0.md
+      - 1_1: train_applprev_1_1.md
+      - 2_0: train_applprev_2.md
+    - base: train_base.md
+    - credit_bureau:
+      - a_1_0 : train_credit_bureau_a_1_0.md
+      - a_1_1 : train_credit_bureau_a_1_1.md
+      - a_1_2 : train_credit_bureau_a_1_2.md
+      - a_1_3 : train_credit_bureau_a_1_3.md
+      - a_2_0 : train_credit_bureau_a_2_0.md
+      - a_2_1 : train_credit_bureau_a_2_1.md
+      - a_2_2 : train_credit_bureau_a_2_2.md
+      - a_2_3 : train_credit_bureau_a_2_3.md
+      - a_2_4 : train_credit_bureau_a_2_4.md
+      - a_2_5 : train_credit_bureau_a_2_5.md
+      - a_2_6 : train_credit_bureau_a_2_6.md
+      - a_2_7 : train_credit_bureau_a_2_7.md
+      - a_2_8 : train_credit_bureau_a_2_8.md
+      - a_2_9 : train_credit_bureau_a_2_9.md
+      - a_2_10 : train_credit_bureau_a_2_10.md
+      - b_1 : train_credit_bureau_b_1.md
+      - b_2 : train_credit_bureau_b_2.md
+    - debitcard: train_debitcard_1.md
+    - deposit: train_deposit_1.md
+    - other: train_other_1.md
+    - person:
+      - 1 : train_person_1.md
+      - 2 : train_person_2.md
+    - static:
+      - 0 : train_static_0_0.md
 theme:
   name: material
   features:
@@ -30,6 +61,7 @@ theme:
 
 plugins: 
   - search
+  - table-reader
   - git-authors:
             exclude:
                 - index.md
@@ -47,3 +79,7 @@ markdown_extensions:
     - pymdownx.tabbed:
         alternate_style: true 
 
+
+
+# hooks:
+#   - docs\hooks\create_profile.py
