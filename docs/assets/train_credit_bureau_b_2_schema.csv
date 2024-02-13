@@ -1,7 +1,0 @@
-Variable,Description
-case_id, Id to merge on
-num_group1, 0
-num_group2, 0
-pmts_date_1107D,"Payment date for an active contract according to credit bureau (num_group1 - contract, num_group2 - payment)."
-pmts_dpdvalue_108P,"Value of past due payment for active contract (num_group1 - existing contract, num_group2 - payment)."
-pmts_pmtsoverdue_635A,"Active contract that has overdue payments (num_group1 - existing contract, num_group2 - payment)."

@@ -1,7 +1,0 @@
-Variable,Description
-case_id, Id to merge on
-last180dayaveragebalance_704A,Average balance on debit card in the last 180 days.
-last180dayturnover_1134A,Debit card's turnover within the last 180 days.
-last30dayturnover_651A,Debit card turnover for the last 30 days.
-num_group1, 0
-openingdate_857D,Debit card opening date.
