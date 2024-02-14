@@ -87,5 +87,5 @@ markdown_extensions:
 
 
 
-hooks:
-  - docs/hooks/create_profile.py
+# hooks:
+#   - docs/hooks/create_profile.py
