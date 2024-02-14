@@ -3,6 +3,8 @@ import os
 from pathlib import Path
 from ydata_profiling import ProfileReport
 
+DOCS_PATH = Path("docs/assets")
+
 
 def generate_markdown_script(name: str):
     python_script = f'''\
@@ -33,9 +35,11 @@ base_wd = Path(os.getcwd())
 data_path = base_wd / Path("data/parquet_files/train")
 df_schema = pd.read_csv(base_wd / "data/feature_definitions.csv")
 for file_name in os.listdir(data_path):
-    df = pd.read_parquet(data_path /file_name)
-    df_schema.set_index('Variable').T[df.columns.to_list()].T.to_csv(f'../../docs/assets/{file_name}_schema.csv')
-    generate_markdown_script(file_name)
-    if not os.path.exists(f"../../docs/assets/{file_name}_report.html"):
-        profile = ProfileReport(df_applprev, title=f"Profiling Report: {file_name}")
-        profile.to_file(f"../../docs/assets/{file_name}_report.html")
+    base_name, _ = os.path.splitext(file_name)
+    generate_markdown_script(base_name)
+
+    if not os.path.exists(  DOCS_PATH / f"{base_name}_report.html"):
+        df = pd.read_parquet(data_path /file_name)
+        df_schema.set_index('Variable').T[df.columns.to_list()].T.to_csv(DOCS_PATH /  f'{base_name}_schema.csv')
+        profile = ProfileReport(df, title=f"Profiling Report: {base_name}")
+        profile.to_file(DOCS_PATH / f"{base_name}_report.html")
