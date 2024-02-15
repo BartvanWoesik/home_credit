@@ -6,13 +6,56 @@ data:
       - dateofrealrepmt_138D
     agg_columns:
       - name: numberofcontrsvalue_358L
-        aggregation: max
+        base_feature_name: numberofcontrsvalue_358L_max
+        aggregation: 
+          _target_: numpy.max
+          _partial_: true
       - name: nominalrate_281L
-        aggregation: mean
+        base_feature_name: nominalrate_281L_min
+        aggregation: 
+          _target_: numpy.min
+          _partial_: true
+
+  applprev_2:
+    time_col: []
+    agg_columns:
+      - name: credacc_cards_status_52L
+        base_feature_name: credacc_cards_status_52L_mode
+        aggregation: 
+          _target_: data_pipeline.pipes.get_mode
+          _partial_: true
+      - name: credacc_cards_status_52L
+        base_feature_name: credacc_cards_status_52L_last
+        aggregation: 
+          _target_: data_pipeline.pipes.get_last
+          _partial_: true
+
   debitcard:
     time_col:
       - openingdate_857D
     agg_columns:
       - name: last180dayaveragebalance_704A
-        aggregation: last
+        base_feature_name: last180dayaveragebalance_704A_last
+        aggregation: 
+          _target_: data_pipeline.pipes.get_last
+          _partial_: true
+      - name: last180dayaveragebalance_704A
+        base_feature_name: last180dayaveragebalance_704A_mean
+        aggregation: 
+          _target_: numpy.mean
+          _partial_: true
+      - name: last180dayaveragebalance_704A
+        base_feature_name: last180dayaveragebalance_704A_max
+        aggregation: 
+          _target_: numpy.max
+          _partial_: true
 
+
+
+data_pipeline:
+ _target_: data_pipeline.datapipeline.PandasDataPipeline
+ steps: 
+  -
+   _target_: data_pipeline.pipelinesteps.create_one_hot_encoder
+   columns: [credacc_cards_status_52L_mode_0]
+   _partial_: true
