@@ -13,6 +13,10 @@ def get_last(iterable):
     """
     if iterable is None:
         return None
+    
+    if isinstance(iterable, (pd.DataFrame)):
+        iterable = pd.Series(iterable.iloc[0])
+    
     try:
         return next(reversed(list(iterable)))
     except StopIteration:
@@ -32,7 +36,10 @@ def get_mode(iterable):
     """
     if iterable is None:
         return None
-    series = pd.Series(iterable)
-    series = series.dropna()  # Remove None values
+    if isinstance(iterable, (pd.DataFrame)):
+        series = pd.Series(iterable.iloc[0])
+    else:
+        series = pd.Series(iterable)   
+    series = series.dropna()  
     mode_element = series.mode()
     return mode_element[0] if not mode_element.empty else None

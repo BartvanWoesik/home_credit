@@ -31,6 +31,9 @@ class Dataset(dict):
     @property
     def columns(self):
         return list(self.splits.values())[0][0].columns.tolist()
+    @property
+    def shape(self):
+        return self.X.shape
 
     def _split_data(self) -> None:
         self._is_data_splitted = True

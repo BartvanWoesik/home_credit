@@ -15,6 +15,11 @@ data:
         aggregation: 
           _target_: numpy.min
           _partial_: true
+      - name: classificationofcontr_400M
+        base_feature_name: classificationofcontr_400M_mode
+        aggregation: 
+          _target_: data_pipeline.pipes.get_mode
+          _partial_: true
 
   applprev_2:
     time_col: []
@@ -57,5 +62,11 @@ data_pipeline:
  steps: 
   -
    _target_: data_pipeline.pipelinesteps.create_one_hot_encoder
-   columns: [credacc_cards_status_52L_mode_0]
+   columns: 
+    - credacc_cards_status_52L_mode_0
+    - credacc_cards_status_52L_last_0
+    - classificationofcontr_400M_mode_0
+    - classificationofcontr_400M_mode_1
+    - classificationofcontr_400M_mode_2
+    - classificationofcontr_400M_mode_3
    _partial_: true

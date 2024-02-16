@@ -4,9 +4,7 @@ import pandas as pd
 import os
 import hydra
 from hydra.utils import instantiate
-from functools import partial
-import numpy as np
-from data_pipeline.pipes import get_last, get_mode  
+
 
 
 DATA_PATH = Path(os.getcwd()) / "data/parquet_files/train"
@@ -17,13 +15,26 @@ DATE_DECISION = 'date_decision'
 
 import os
 
-os.environ['HYDRA_FULL_ERROR'] = '1'
+# os.environ['HYDRA_FULL_ERROR'] = '1'
 
 
 def create_aggration_dataframe(cfg: dict, df: pd.DataFrame, itteration: int) -> pd.DataFrame:
     if len(cfg.time_col) > 0:
         df = df[df[cfg.time_col[0]] < df[DATE_DECISION]]
+    print(type(cfg.agg_columns))
     aggregation_specs = {}
+    # for column in cfg.agg_columns:
+
+
+    #     print(column.name)
+    #     aggregation_specs[f'{column.base_feature_name}_{itteration}'] = (column.name , instantiate(column.aggregation))
+    #     sub_df = df[[ID, column.name]]
+    #     agg_df = sub_df.groupby(ID).agg(**aggregation_specs)
+    #     filtered_df = agg_df[column.base_feature_name]
+    #     final_df = pd.concat(final_df, filtered_df )
+    #     print("df created")
+
+
     for column in cfg.agg_columns:
         aggregation_specs[f'{column.base_feature_name}_{itteration}'] = (column.name , instantiate(column.aggregation))
     return df.groupby(ID).agg(**aggregation_specs)
@@ -55,10 +66,11 @@ def main(cfg: DictConfig) -> pd.DataFrame:
         for i, file in enumerate(files):
             print(file)
             df_file = pd.read_parquet(DATA_PATH / file)
+            unique_cols = list(set([ col.name for col in cfg_columns.agg_columns]))
             if len(cfg_columns.time_col) > 0:
-                df_file = df_file[[ID] +[ col.name for col in cfg_columns.agg_columns] + [cfg_columns.time_col[0]]]
+                df_file = df_file[[ID] + unique_cols + [cfg_columns.time_col[0]]]
             else: 
-                df_file = df_file[[ID] +[ col.name for col in cfg_columns.agg_columns]]
+                df_file = df_file[[ID] + unique_cols]
             df_combined = df_base.merge(df_file, on = ID, how = 'left', validate="one_to_many")
             df_agg = create_aggration_dataframe(cfg_columns, df_combined, i)
     
