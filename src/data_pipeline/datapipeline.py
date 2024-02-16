@@ -14,7 +14,7 @@ def safe(fn):
         return res
 
     return wrapper
-  
+
 
 class PandasDataPipeline:
     def __init__(
@@ -24,7 +24,6 @@ class PandasDataPipeline:
     ) -> None:
         self.steps = steps
         self.name = name
-  
 
     def _apply(self, df: pd.DataFrame) -> pd.DataFrame:
         for step_number, step in enumerate(self.steps, start=1):
@@ -37,17 +36,17 @@ class PandasDataPipeline:
 
             # Check if step_func expects a pandas DataFrame as its argument
             if not self._function_accepts_dataframe(step_func):
-                raise TypeError(f"The step function at step {step_number} does not accept a pandas DataFrame as an argument.")
-            
+                raise TypeError(
+                    f"The step function at step {step_number} does not accept a pandas DataFrame as an argument."
+                )
+
             # Apply the step
             df = step_func(df)
 
         return df
-    
-
 
     def _function_accepts_dataframe(self, func):
-        """Check if first argument op function expects pd.DataFrame  """
+        """Check if first argument op function expects pd.DataFrame"""
         sig = inspect.signature(func)
         params = sig.parameters.values()
         first_param = next(iter(params), None)
