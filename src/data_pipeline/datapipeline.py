@@ -14,7 +14,7 @@ def safe(fn):
         return res
 
     return wrapper
- 
+  
 
 class PandasDataPipeline:
     def __init__(
