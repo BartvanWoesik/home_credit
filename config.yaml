@@ -1,7 +1,7 @@
 # config.yaml
 
 data:
-  credit_bureau_a_1:
+  credit_bureau_a_1_0:
     time_col:
       - dateofrealrepmt_138D
     agg_columns:
@@ -20,6 +20,25 @@ data:
         aggregation: 
           _target_: data_pipeline.pipes.get_mode
           _partial_: true
+      - name: totaldebtoverduevalue_178A
+        base_feature_name: totaldebtoverduevalue_178A_max
+        aggregation: 
+          _target_: numpy.max
+          _partial_: true
+  
+  credit_bureau_a_2_0:
+    time_col: []
+    agg_columns:
+      - name: collater_valueofguarantee_876L
+        base_feature_name: collater_valueofguarantee_876L_mean
+        aggregation: 
+          _target_: numpy.mean
+          _partial_: true
+      - name: pmts_overdue_1140A
+        base_feature_name: pmts_overdue_1140A_max
+        aggregation: 
+          _target_: numpy.max
+          _partial_: true
 
   applprev_2:
     time_col: []
@@ -35,7 +54,7 @@ data:
           _target_: data_pipeline.pipes.get_last
           _partial_: true
 
-  debitcard:
+  debitcard_2:
     time_col:
       - openingdate_857D
     agg_columns:
@@ -66,7 +85,11 @@ data_pipeline:
     - credacc_cards_status_52L_mode_0
     - credacc_cards_status_52L_last_0
     - classificationofcontr_400M_mode_0
-    - classificationofcontr_400M_mode_1
-    - classificationofcontr_400M_mode_2
-    - classificationofcontr_400M_mode_3
    _partial_: true
+
+  # - 
+  #   _target_: data_pipeline.pipelinesteps.drop_redundant_columns
+  #   columns:
+  #     # - index
+  #     - case_id
+  #   _partial_: true

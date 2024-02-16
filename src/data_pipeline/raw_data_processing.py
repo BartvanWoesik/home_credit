@@ -7,8 +7,9 @@ from hydra.utils import instantiate
 
 
 
-DATA_PATH = Path(os.getcwd()) / "data/parquet_files/train"
-BASE_FILE = "train_base.parquet"
+DATA_PATH = Path()
+DATA_LOCATION = ''
+BASE_FILE = "" 
 ID = "case_id"
 TARGET = "target"
 DATE_DECISION = 'date_decision'
@@ -54,10 +55,21 @@ def get_orderd_data_files(data_path: Path, all_file_sources: list[str]) -> list[
 
 @hydra.main(config_path="../../", config_name="config.yaml")
 def main(cfg: DictConfig) -> pd.DataFrame:
+
+    # all_sources we want to use
     all_file_sources = list(cfg.data.keys())
     data_structure = get_orderd_data_files(DATA_PATH, all_file_sources = all_file_sources)
+
+    # Read base file where we can join the other files on
     df_base = pd.read_parquet(DATA_PATH / BASE_FILE)
-    df  = pd.DataFrame(df_base[[ID, TARGET]])
+
+    # Only keep the ID and TARGET column
+    if TARGET in df_base.columns and ID in df_base.columns:
+        df  = pd.DataFrame(df_base[[ID, TARGET]])
+    else:   
+        df = pd.DataFrame(df_base[[ID]])
+
+    # Loop over all the files and join them to the base file
     for source_file in data_structure:
 
         source_name = list(source_file.keys())[0]
@@ -75,9 +87,18 @@ def main(cfg: DictConfig) -> pd.DataFrame:
             df_agg = create_aggration_dataframe(cfg_columns, df_combined, i)
     
             df = df.merge(df_agg, on = ID, how ='left')
+
+    # Write the dataframe to feather
     print('Write df to feather')
-    df.to_feather(DATA_PATH / 'processed_train.feather')
+    df.to_feather(DATA_PATH / DATA_LOCATION)
+
+
 
 if __name__ == "__main__":
-    main()
+
+    for split in ['train', 'test']:
+        DATA_PATH = Path(os.getcwd()) / f"data/parquet_files/{split}"
+        DATA_LOCATION = f"processed_{split}.feather"
+        BASE_FILE = f"{split}_base.parquet"
+        main()
  

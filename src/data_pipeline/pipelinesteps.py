@@ -8,7 +8,8 @@ def create_one_hot_encoder(df: pd.DataFrame, columns):
 def read_data(file_path: str):
     return pd.read_feather(file_path)
 
-
+def drop_redundant_columns(df: pd.DataFrame, columns: list):
+    return df.drop(columns=columns)
 
 from sklearn.model_selection import ShuffleSplit
 from typing import Dict, Tuple
