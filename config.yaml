@@ -1,58 +1,58 @@
 # config.yaml
 
 data:
-  # credit_bureau_a_1:
-  #   time_col:
-  #     - dateofrealrepmt_138D
-  #   agg_columns:
-  #     - name: numberofcontrsvalue_358L
-  #       base_feature_name: numberofcontrsvalue_358L_max
-  #       aggregation: 
-  #         _target_: numpy.max
-  #         _partial_: true
-  #     - name: nominalrate_281L
-  #       base_feature_name: nominalrate_281L_min
-  #       aggregation: 
-  #         _target_: numpy.min
-  #         _partial_: true
-  #     - name: classificationofcontr_400M
-  #       base_feature_name: classificationofcontr_400M_mode
-  #       aggregation: 
-  #         _target_: data_pipeline.pipes.get_mode
-  #         _partial_: true
-  #     - name: totaldebtoverduevalue_178A
-  #       base_feature_name: totaldebtoverduevalue_178A_max
-  #       aggregation: 
-  #         _target_: numpy.max
-  #         _partial_: true
+  credit_bureau_a_1:
+    time_col:
+      - dateofrealrepmt_138D
+    agg_columns:
+      - name: numberofcontrsvalue_358L
+        base_feature_name: numberofcontrsvalue_358L_max
+        aggregation: 
+          _target_: numpy.max
+          _partial_: true
+      - name: nominalrate_281L
+        base_feature_name: nominalrate_281L_min
+        aggregation: 
+          _target_: numpy.min
+          _partial_: true
+      - name: classificationofcontr_400M
+        base_feature_name: classificationofcontr_400M_mode
+        aggregation: 
+          _target_: data_pipeline.pipes.get_mode
+          _partial_: true
+      - name: totaldebtoverduevalue_178A
+        base_feature_name: totaldebtoverduevalue_178A_max
+        aggregation: 
+          _target_: numpy.max
+          _partial_: true
   
-  # credit_bureau_a_2:
-  #   time_col: []
-  #   agg_columns:
-  #     - name: collater_valueofguarantee_876L
-  #       base_feature_name: collater_valueofguarantee_876L_mean
-  #       aggregation: 
-  #         _target_: numpy.mean
-  #         _partial_: true
-  #     - name: pmts_overdue_1140A
-  #       base_feature_name: pmts_overdue_1140A_max
-  #       aggregation: 
-  #         _target_: numpy.max
-  #         _partial_: true
+  credit_bureau_a_2:
+    time_col: []
+    agg_columns:
+      - name: collater_valueofguarantee_876L
+        base_feature_name: collater_valueofguarantee_876L_mean
+        aggregation: 
+          _target_: numpy.mean
+          _partial_: true
+      - name: pmts_overdue_1140A
+        base_feature_name: pmts_overdue_1140A_max
+        aggregation: 
+          _target_: numpy.max
+          _partial_: true
 
-  # applprev_2:
-  #   time_col: []
-  #   agg_columns:
-  #     - name: credacc_cards_status_52L
-  #       base_feature_name: credacc_cards_status_52L_mode
-  #       aggregation: 
-  #         _target_: data_pipeline.pipes.get_mode
-  #         _partial_: true
-  #     - name: credacc_cards_status_52L
-  #       base_feature_name: credacc_cards_status_52L_last
-  #       aggregation: 
-  #         _target_: data_pipeline.pipes.get_last
-  #         _partial_: true
+  applprev_2:
+    time_col: []
+    agg_columns:
+      - name: credacc_cards_status_52L
+        base_feature_name: credacc_cards_status_52L_mode
+        aggregation: 
+          _target_: data_pipeline.pipes.get_mode
+          _partial_: true
+      - name: credacc_cards_status_52L
+        base_feature_name: credacc_cards_status_52L_last
+        aggregation: 
+          _target_: data_pipeline.pipes.get_last
+          _partial_: true
 
   debitcard_1:
     time_col:
@@ -82,9 +82,9 @@ data_pipeline:
   -
    _target_: data_pipeline.pipelinesteps.create_one_hot_encoder
    columns: 
-    - credacc_cards_status_52L_mode_0
-    - credacc_cards_status_52L_last_0
-    - classificationofcontr_400M_mode_0
+    - credacc_cards_status_52L_mode
+    - credacc_cards_status_52L_last
+    - classificationofcontr_400M_mode
    _partial_: true
 
   # - 
