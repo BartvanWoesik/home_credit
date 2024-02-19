@@ -85,11 +85,12 @@ def main(cfg: DictConfig) -> pd.DataFrame:
                 df_file = df_file[[ID] + unique_cols + [cfg_columns.time_col[0]]]
             else:
                 df_file = df_file[[ID] + unique_cols]
-            df = pd.concat([df, df_file])
-        df_combined = df_base.merge(df, on=ID, how="left", validate="one_to_many")
-        df_agg = create_aggration_dataframe(cfg_columns, df_combined, i)
+            df_combined = df_base.merge(
+                df_file, on=ID, how="left", validate="one_to_many"
+            )
+            df_agg = create_aggration_dataframe(cfg_columns, df_combined, i)
 
-        df = df.merge(df_agg, on=ID, how="left", validate="one_to_many")
+            df = df.merge(df_agg, on=ID, how="left")
 
     # Write the dataframe to feather
     print("Write df to feather")
