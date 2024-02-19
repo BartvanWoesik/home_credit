@@ -1,3 +1,8 @@
 pandas
+pyarrow
+hydra-core
+matplotlib
+omegaconf
 numpy
 scikit-learn
+shap
