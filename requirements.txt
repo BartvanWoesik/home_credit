@@ -1,3 +1,4 @@
 pandas
 numpy
 scikit-learn
+git+https://github.com/BartvanWoesik/MyLogger.git

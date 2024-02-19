@@ -18,29 +18,20 @@ DATE_DECISION = "date_decision"
 # os.environ['HYDRA_FULL_ERROR'] = '1'
 
 
-def create_aggration_dataframe(
-    cfg: dict, df: pd.DataFrame, itteration: int
-) -> pd.DataFrame:
+def create_aggration_dataframe(cfg: dict, df: pd.DataFrame) -> pd.DataFrame:
     if len(cfg.time_col) > 0:
         df = df[df[cfg.time_col[0]] < df[DATE_DECISION]]
-    print(type(cfg.agg_columns))
     aggregation_specs = {}
-    # for column in cfg.agg_columns:
-
-    #     print(column.name)
-    #     aggregation_specs[f'{column.base_feature_name}_{itteration}'] = (column.name , instantiate(column.aggregation))
-    #     sub_df = df[[ID, column.name]]
-    #     agg_df = sub_df.groupby(ID).agg(**aggregation_specs)
-    #     filtered_df = agg_df[column.base_feature_name]
-    #     final_df = pd.concat(final_df, filtered_df )
-    #     print("df created")
 
     for column in cfg.agg_columns:
-        aggregation_specs[f"{column.base_feature_name}_{itteration}"] = (
+        aggregation_specs[f"{column.base_feature_name}"] = (
             column.name,
             instantiate(column.aggregation),
         )
-    return df.groupby(ID).agg(**aggregation_specs)
+    logger.info("Start the aggregation")
+    df_agg = df.groupby(ID).agg(**aggregation_specs).reset_index()
+    logger.info(f"columns in aggregation dataset: {df_agg.columns}")
+    return df_agg
 
 
 def get_orderd_data_files(data_path: Path, all_file_sources: list[str]) -> list[dict]:
@@ -75,22 +66,25 @@ def main(cfg: DictConfig) -> pd.DataFrame:
         source_name = list(source_file.keys())[0]
         files = list(source_file.values())[0]
         cfg_columns = cfg.data[source_name]
-        df = pd.DataFrame()
-        for i, file in enumerate(files):
+        df_all_files = pd.DataFrame()
+        for file in files:
             print(file)
-            df_file = pd.read_parquet(DATA_PATH / file)
-
             unique_cols = list(set([col.name for col in cfg_columns.agg_columns]))
             if len(cfg_columns.time_col) > 0:
-                df_file = df_file[[ID] + unique_cols + [cfg_columns.time_col[0]]]
+                df_file = pd.read_parquet(
+                    DATA_PATH / file,
+                    columns=[ID] + unique_cols + [cfg_columns.time_col[0]],
+                )
             else:
-                df_file = df_file[[ID] + unique_cols]
-            df_combined = df_base.merge(
-                df_file, on=ID, how="left", validate="one_to_many"
-            )
-            df_agg = create_aggration_dataframe(cfg_columns, df_combined, i)
-
-            df = df.merge(df_agg, on=ID, how="left")
+                df_file = pd.read_parquet(DATA_PATH / file, columns=[ID] + unique_cols)
+            df_all_files = pd.concat([df_all_files, df_file])
+        df_combined = df_base.merge(
+            df_all_files, on=ID, how="left", validate="one_to_many"
+        )
+        logger.info(f"columns in combined dataset: {df_combined.columns}")
+        df_agg = create_aggration_dataframe(cfg_columns, df_combined)
+        logger.info(f"columns in base df: {df.columns}")
+        df = df.merge(df_agg, on="case_id", how="left", validate="one_to_many")
 
     # Write the dataframe to feather
     print("Write df to feather")
