@@ -17,3 +17,10 @@ This project will take 4 weeks to complete.
 
 
 Two person will work on this project!
+
+
+To create the dataset used by the train scirpt and notebooks run:
+
+```python 
+python src/data_pipeline/raw_data_processing.py
+```

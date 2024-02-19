@@ -4,6 +4,7 @@ import pandas as pd
 import os
 import hydra
 from hydra.utils import instantiate
+from my_logger.custom_logger import logger
 
 
 DATA_PATH = Path()
@@ -58,7 +59,7 @@ def main(cfg: DictConfig) -> pd.DataFrame:
     # all_sources we want to use
     all_file_sources = list(cfg.data.keys())
     data_structure = get_orderd_data_files(DATA_PATH, all_file_sources=all_file_sources)
-
+    logger.info(f"Data structure: {data_structure}")
     # Read base file where we can join the other files on
     df_base = pd.read_parquet(DATA_PATH / BASE_FILE)
 
@@ -70,23 +71,25 @@ def main(cfg: DictConfig) -> pd.DataFrame:
 
     # Loop over all the files and join them to the base file
     for source_file in data_structure:
+        logger.info(f"source_file: {source_file}")
         source_name = list(source_file.keys())[0]
         files = list(source_file.values())[0]
         cfg_columns = cfg.data[source_name]
+        df = pd.DataFrame()
         for i, file in enumerate(files):
             print(file)
             df_file = pd.read_parquet(DATA_PATH / file)
+
             unique_cols = list(set([col.name for col in cfg_columns.agg_columns]))
             if len(cfg_columns.time_col) > 0:
                 df_file = df_file[[ID] + unique_cols + [cfg_columns.time_col[0]]]
             else:
                 df_file = df_file[[ID] + unique_cols]
-            df_combined = df_base.merge(
-                df_file, on=ID, how="left", validate="one_to_many"
-            )
-            df_agg = create_aggration_dataframe(cfg_columns, df_combined, i)
+            df = pd.concat([df, df_file])
+        df_combined = df_base.merge(df, on=ID, how="left", validate="one_to_many")
+        df_agg = create_aggration_dataframe(cfg_columns, df_combined, i)
 
-            df = df.merge(df_agg, on=ID, how="left")
+        df = df.merge(df_agg, on=ID, how="left", validate="one_to_many")
 
     # Write the dataframe to feather
     print("Write df to feather")
@@ -95,6 +98,7 @@ def main(cfg: DictConfig) -> pd.DataFrame:
 
 if __name__ == "__main__":
     for split in ["train", "test"]:
+        logger.info(f"Processing {split} data")
         DATA_PATH = Path(os.getcwd()) / f"data/parquet_files/{split}"
         DATA_LOCATION = f"processed_{split}.feather"
         BASE_FILE = f"{split}_base.parquet"

@@ -1,7 +1,7 @@
 # config.yaml
 
 data:
-  credit_bureau_a_1_0:
+  credit_bureau_a_1:
     time_col:
       - dateofrealrepmt_138D
     agg_columns:
