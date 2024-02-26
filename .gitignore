@@ -6,4 +6,3 @@ mlartifacts/*
 artifact_storage/*
 src/modelling/__pycache__/*
 src/model/__pycache__/*
-src/model/__pycache__/
