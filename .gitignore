@@ -1,4 +1,4 @@
 */__pycache__
 *.parquet
 outputs/
-mlruns/
+mlruns/*
