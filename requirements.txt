@@ -6,3 +6,4 @@ omegaconf
 numpy
 scikit-learn
 shap
+ipywidgets
