@@ -2,3 +2,5 @@
 *.parquet
 outputs/
 mlruns/*
+mlartifacts/*
+atrifacts_storage/*
