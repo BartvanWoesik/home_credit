@@ -78,18 +78,18 @@ data:
 
 data_pipeline:
  _target_: data_pipeline.datapipeline.PandasDataPipeline
- steps: 
-  -
-   _target_: data_pipeline.pipelinesteps.create_one_hot_encoder
-   columns: 
-    - credacc_cards_status_52L_mode
-    - credacc_cards_status_52L_last
-    - classificationofcontr_400M_mode
-   _partial_: true
+ steps: []
 
-  # - 
-  #   _target_: data_pipeline.pipelinesteps.drop_redundant_columns
-  #   columns:
-  #     # - index
-  #     - case_id
-  #   _partial_: true
+
+model:
+  model_steps: 
+    -
+      _target_: model.modelorchastrator.OptBinningTransformer
+      column: ["credacc_cards_status_52L_mode", "credacc_cards_status_52L_last", "classificationofcontr_400M_mode"]
+      
+    -
+      _target_: sklearn.ensemble.HistGradientBoostingClassifier
+      learning_rate: 0.001
+      verbose: 2
+      class_weight: balanced
+    
