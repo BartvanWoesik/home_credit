@@ -44,6 +44,17 @@ def main(cfg):
         mlflow.sklearn.log_model(model, "model")
         mlflow.sklearn.save_model(model, "model")
 
+        predictions = model.predict_proba(dataset.X_test)
+        df_predictions = pd.DataFrame(
+            {"case_id": dataset.X_test["case_id"], "predictions": predictions.T[1]}
+        )
+        output_dir = base_path / "artifact_storage/predictions"
+        os.makedirs(output_dir, exist_ok=True)
+
+        df_predictions.to_csv(output_dir / "predictions.csv")
+
+        mlflow.log_artifact(output_dir / "predictions.csv")
+
         # Print the run ID
         print("MLflow run ID:", mlflow.active_run().info.run_id)
 
