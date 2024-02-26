@@ -12,3 +12,4 @@ src/data_pipeline/dataset.py
 src/data_pipeline/pipelinesteps.py
 src/data_pipeline/pipes.py
 src/data_pipeline/raw_data_processing.py
+src/model/modelorchastrator.py

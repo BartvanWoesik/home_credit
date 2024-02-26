@@ -7,3 +7,4 @@ numpy
 scikit-learn
 shap
 ipywidgets
+git+https://github.com/BartvanWoesik/MyLogger.git
