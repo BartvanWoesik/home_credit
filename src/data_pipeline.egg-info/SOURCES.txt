@@ -1,6 +1,7 @@
 README.md
 pyproject.toml
 src/__init__.py
+src/train.py
 src/data_pipeline/__init__.py
 src/data_pipeline/datapipeline.py
 src/data_pipeline/dataset.py

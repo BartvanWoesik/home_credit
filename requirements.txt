@@ -1,4 +1,10 @@
 pandas
+pyarrow
+hydra-core
+matplotlib
+omegaconf
 numpy
 scikit-learn
+shap
+ipywidgets
 git+https://github.com/BartvanWoesik/MyLogger.git
