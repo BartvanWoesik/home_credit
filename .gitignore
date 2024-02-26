@@ -3,6 +3,7 @@
 outputs/
 mlruns/*
 mlartifacts/*
-atrifacts_storage\*
+artifacts_storage\*
 src\modelling\__pycache__\*
 src\model\__pycache__\*
+src\model\__pycache__\
