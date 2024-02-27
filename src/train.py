@@ -10,6 +10,8 @@ import subprocess
 from pathlib import Path
 from model.modelorchastrator import ModelOrchestrator
 
+from evaluate.shap_eval import ShapEval
+
 mlflow.set_tracking_uri("http://127.0.0.1:5000/")
 
 
@@ -44,16 +46,28 @@ def main(cfg):
         mlflow.sklearn.log_model(model, "model")
         mlflow.sklearn.save_model(model, "model")
 
-        predictions = model.predict_proba(dataset.X_test)
-        df_predictions = pd.DataFrame(
-            {"case_id": dataset.X_test["case_id"], "predictions": predictions.T[1]}
-        )
         output_dir = base_path / "artifact_storage/predictions"
         os.makedirs(output_dir, exist_ok=True)
+        test_data = pd.read_feather(
+            base_path / "data/parquet_files/test/processed_test.feather"
+        )
+        predictions = model.predict_proba(test_data.reset_index())
+        df_predictions = pd.DataFrame(
+            {"case_id": test_data["case_id"], "predictions": predictions.T[1]}
+        )
+        df_predictions.to_csv(output_dir / "predictions.csv", index=False)
 
-        df_predictions.to_csv(output_dir / "predictions.csv")
+        # Create a SHAP explainer
+        shap_eval = ShapEval(
+            model.pipeline[-1],
+            model.transform_without_predictor(dataset.X_train[:1000]),
+            base_path,
+            num_of_features=10,
+        )
+        shap_eval.create_shap_insights()
 
         mlflow.log_artifact(output_dir / "predictions.csv")
+        mlflow.log_artifact(base_path / "artifact_storage/model_evaluation/")
 
         # Print the run ID
         print("MLflow run ID:", mlflow.active_run().info.run_id)

@@ -25,6 +25,10 @@ class CustomModelPipeline:
         # Add your code here to fit the model
         self.pipeline.fit(X, y)
 
+    def transform_without_predictor(self, X):
+        # Add your code here to transform the data
+        return self.pipeline[:-1].transform(X)
+
     def predict(self, X):
         # Add your code here to make predictions
         return self.pipeline.predict(X)
