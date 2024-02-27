@@ -1,7 +1,10 @@
 from sklearn.model_selection import cross_validate
 from sklearn.metrics import get_scorer
+from sklearn.metrics import get_scorer_names
 import numpy as np
 from typing import Dict, Any, List
+from evaluate.scorers import custom_scores
+from my_logger.custom_logger import logger
 
 
 class ModelEvaluator:
@@ -36,7 +39,12 @@ class ModelEvaluator:
         """
         scoring = {}
         for metric in self.metrics:
-            scoring[metric] = get_scorer(metric)
+            if metric in get_scorer_names():
+                scoring[metric] = get_scorer(metric)
+            elif metric in custom_scores.keys():
+                scoring[metric] = custom_scores[metric]
+            else:
+                logger.info(f"Metric {metric} not recognized. Ignoring.")
 
         results = cross_validate(self.model, X, y, scoring=scoring, cv=cv)
         return results
