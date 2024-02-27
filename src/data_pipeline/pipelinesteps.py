@@ -1,18 +1,14 @@
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.compose import ColumnTransformer
+from sklearn.model_selection import ShuffleSplit
+from typing import Dict, Tuple
 import pandas as pd
 
-def create_one_hot_encoder(df: pd.DataFrame, columns):
-    return pd.get_dummies(df, columns=columns)
 
 def read_data(file_path: str):
     return pd.read_feather(file_path)
 
+
 def drop_redundant_columns(df: pd.DataFrame, columns: list):
     return df.drop(columns=columns)
-
-from sklearn.model_selection import ShuffleSplit
-from typing import Dict, Tuple
 
 
 def data_splitter(
@@ -21,6 +17,21 @@ def data_splitter(
     n_splits=2,
     random_state: int = 36,
 ) -> Dict[str, Tuple[pd.DataFrame, pd.DataFrame]]:
+    """
+    Split the data into train, test, and out-of-time (OOT) sets.
+
+    Parameters:
+        X (pd.DataFrame): The input features.
+        y (pd.DataFrame): The target variable.
+        n_splits (int): The number of splits for cross-validation. Default is 2.
+        random_state (int): The random seed for reproducibility. Default is 36.
+
+    Returns:
+        dict: A dictionary containing the train, test, and OOT sets.
+            - "train": A tuple of the training features and target.
+            - "test": A tuple of the testing features and target.
+            - "oot": A tuple of the out-of-time features and target.
+    """
     X = X.reset_index()
     oot_range = list(X[round(0.85 * X.shape[0]) : X.shape[0]].index)
 

@@ -2,6 +2,7 @@ import os
 import mlflow
 import mlflow.sklearn
 import pandas as pd
+import numpy as np
 from data_pipeline.dataset import Dataset
 from data_pipeline.pipelinesteps import data_splitter
 from hydra.utils import instantiate
@@ -9,8 +10,10 @@ import hydra
 import subprocess
 from pathlib import Path
 from model.modelorchastrator import ModelOrchestrator
+from evaluate.metric_eval import ModelEvaluator
 
 from evaluate.shap_eval import ShapEval
+from my_logger.custom_logger import logger
 
 mlflow.set_tracking_uri("http://127.0.0.1:5000/")
 
@@ -45,6 +48,18 @@ def main(cfg):
 
         mlflow.sklearn.log_model(model, "model")
         mlflow.sklearn.save_model(model, "model")
+
+        # Use cross evaluation to evaluate the model on training data
+        logger.info("Creating a cross-validation evaluator for the model.")
+        metrics = ["roc_auc_ovr", "f1", "gini", "kaggle"]
+        cv_eval = ModelEvaluator(model.pipeline[-1], metrics)
+        cv_eval_results = cv_eval.evaluate(
+            model.transform_without_predictor(dataset.X), dataset.y
+        )
+        for metric, values in cv_eval_results.items():
+            print(metric)
+            if metric.removeprefix("test_") in metrics:
+                mlflow.log_metric(f"cv_{metric}", np.mean(values))
 
         output_dir = base_path / "artifact_storage/predictions"
         os.makedirs(output_dir, exist_ok=True)
