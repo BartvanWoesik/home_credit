@@ -15,38 +15,63 @@ TARGET = "target"
 DATE_DECISION = "date_decision"
 
 
-# os.environ['HYDRA_FULL_ERROR'] = '1'
+def create_agg_specs(cfg: dict) -> dict:
+    """
+    Create aggregation specifications based on the given configuration.
 
+    Args:
+        cfg (dict): Configuration dictionary containing aggregation specifications.
 
-def create_aggration_dataframe(cfg: dict, df: pd.DataFrame) -> pd.DataFrame:
-    if len(cfg.time_col) > 0:
-        df = df[df[cfg.time_col[0]] < df[DATE_DECISION]]
+    Returns:
+        dict: Aggregation specifications.
+
+    """
     aggregation_specs = {}
-
-    for column in cfg.agg_columns:
+    for column in cfg:
         aggregation_specs[f"{column.base_feature_name}"] = (
             column.name,
             instantiate(column.aggregation),
         )
+    return aggregation_specs
+
+
+def create_aggration_dataframe(cfg: dict, df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Create an aggregated dataframe based on the given configuration and input dataframe.
+
+    Args:
+        cfg (dict): Configuration dictionary containing aggregation specifications.
+        df (pd.DataFrame): Input dataframe to be aggregated.
+
+    Returns:
+        pd.DataFrame: Aggregated dataframe.
+
+    """
+    # Remove rows where event is after the decision
+    if len(cfg.time_col) > 0:
+        df = df[df[cfg.time_col[0]] < df[DATE_DECISION]]
+
+    # Create aggregation specifications
+    aggregation_specs = create_agg_specs(cfg.agg_columns)
+
+    # Perform the aggregation
     logger.info("Start the aggregation")
-    df_agg = df.groupby(ID).agg(**aggregation_specs).reset_index()
-    logger.info(f"columns in aggregation dataset: {df_agg.columns}")
-    return df_agg
+    return df.groupby(ID).agg(**aggregation_specs).reset_index()
 
 
 def get_orderd_data_files(data_path: Path, all_file_sources):
     file_dict = []
     all_files = os.listdir(data_path)
-    for source in all_file_sources:
-        filtered_files = filter(lambda x, source=source: source in x, all_files)
-        filtered_files = list(filter(None, filtered_files))
-        file_dict.append({source: filtered_files})
+    file_dict = [
+        {source: [file for file in all_files if source in file and file is not None]}
+        for source in all_file_sources
+    ]
 
     return file_dict
 
 
 @hydra.main(config_path="../../", config_name="config.yaml")
-def main(cfg: DictConfig) -> pd.DataFrame:
+def create_dataframe(cfg: DictConfig) -> pd.DataFrame:
     # all_sources we want to use
     all_file_sources = list(cfg.data.keys())
     print(type(all_file_sources))
@@ -92,10 +117,15 @@ def main(cfg: DictConfig) -> pd.DataFrame:
     df.to_feather(DATA_PATH / DATA_LOCATION)
 
 
-if __name__ == "__main__":
+def main():
+    global DATA_PATH, DATA_LOCATION, BASE_FILE
     for split in ["train", "test"]:
         logger.info(f"Processing {split} data")
         DATA_PATH = Path(os.getcwd()) / f"data/parquet_files/{split}"
         DATA_LOCATION = f"processed_{split}.feather"
         BASE_FILE = f"{split}_base.parquet"
-        main()
+        create_dataframe()
+
+
+if __name__ == "__main__":
+    main()
