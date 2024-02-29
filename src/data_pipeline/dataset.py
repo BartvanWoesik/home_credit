@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from typing import Any, Optional, Callable, Union
 
+
 class Dataset(dict):
     def __init__(
         self,
@@ -31,6 +32,7 @@ class Dataset(dict):
     @property
     def columns(self):
         return list(self.splits.values())[0][0].columns.tolist()
+
     @property
     def shape(self):
         return self.X.shape
@@ -69,6 +71,21 @@ class Dataset(dict):
         sample_n_rows: Optional[int] = None,
         random_state: int = 36,
     ) -> Union[tuple[pd.DataFrame, np.array], pd.DataFrame]:
+        """
+        Load a specific split of the dataset.
+
+        Args:
+            split (str): The name of the split to load.
+            return_X_y (bool, optional): Whether to return X and y separately. Defaults to False.
+            sample_n_rows (int, optional): Number of rows to sample from the split. Defaults to None.
+            random_state (int, optional): Random state for sampling rows. Defaults to 36.
+
+        Returns:
+            Union[tuple[pd.DataFrame, np.array], pd.DataFrame]: The loaded split of the dataset.
+                If return_X_y is True, returns a tuple of X and y.
+                If return_X_y is False, returns a DataFrame with X and y as columns.
+        """
+
         if not self._is_data_splitted:
             self._split_data()
         if split not in self.splits.keys():
@@ -92,6 +109,22 @@ class Dataset(dict):
         sample_n_rows: Optional[int] = None,
         random_state: int = 36,
     ):
+        """
+        Load the training and testing data splits from the dataset.
+
+        Parameters:
+        - train_split (str): The name of the training split. Default is "train".
+        - test_split (str): The name of the testing split. Default is "test".
+        - sample_n_rows (Optional[int]): The number of rows to sample from the dataset. Default is None.
+        - random_state (int): The random state for sampling rows. Default is 36.
+
+        Returns:
+        - X_train (array-like): The features of the training data.
+        - X_test (array-like): The features of the testing data.
+        - y_train (array-like): The labels of the training data.
+        - y_test (array-like): The labels of the testing data.
+        """
+
         X_train, y_train = self.load_split(
             split=train_split,
             return_X_y=True,
@@ -110,6 +143,21 @@ class Dataset(dict):
         target_column="y",
         name: str = "dataset",
     ):
+        """
+        Create a dataset from a data loading function and optional data pipeline.
+
+        Args:
+            cls: The class of the dataset.
+            data_loading_function: A function that loads the data and returns a pandas DataFrame.
+            data_pipeline: An optional data pipeline to apply to the loaded data.
+            data_splitter: An optional data splitter to split the data into train and test sets.
+            target_column: The name of the target column in the dataset.
+            name: The name of the dataset.
+
+        Returns:
+            An instance of the dataset class.
+
+        """
         data = data_loading_function()
         if data_pipeline:
             data = data_pipeline.apply(data)
@@ -125,8 +173,21 @@ class Dataset(dict):
         cls,
         splits: dict[str, tuple[pd.DataFrame, np.array]],
         name: str = "dataset",
-        target_column: str = "y"
+        target_column: str = "y",
     ):
+        """
+        Create a dataset from splits.
+
+        Args:
+            cls (class): The class of the dataset.
+            splits (dict[str, tuple[pd.DataFrame, np.array]]): A dictionary containing the splits of the dataset.
+                Each split is represented as a tuple of a pandas DataFrame (X) and a numpy array (y).
+            name (str, optional): The name of the dataset. Defaults to "dataset".
+            target_column (str, optional): The name of the target column. Defaults to "y".
+
+        Returns:
+            dataset (cls): The created dataset.
+        """
         Xs = []
         for split_name, (X, y) in splits.items():
             assert (

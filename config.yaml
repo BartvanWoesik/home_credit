@@ -89,10 +89,10 @@ model:
       
     -
       _target_: sklearn.ensemble.HistGradientBoostingClassifier
-      learning_rate: 0.01
+      learning_rate: 0.1
       verbose: 1
       class_weight: balanced
-      max_iter: 1000
+      max_iter: 10
       l2_regularization: 0.25
       early_stopping: True
       max_leaf_nodes: 100

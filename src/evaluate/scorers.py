@@ -1,6 +1,6 @@
+import numpy as np
 from sklearn.metrics import roc_auc_score
 from sklearn.metrics import make_scorer
-import numpy as np
 
 
 def gini_score(y_true, y_pred):

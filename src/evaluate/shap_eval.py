@@ -1,13 +1,30 @@
-import shap
-import matplotlib.pyplot as plt
 import os
-from sklearn.pipeline import Pipeline
-
 from random import randint
+
+import matplotlib.pyplot as plt
+from sklearn.pipeline import Pipeline
+import shap
+
 from my_logger.custom_logger import logger
 
 
 class ShapEval:
+    """
+    Class for evaluating a machine learning model using SHAP (SHapley Additive exPlanations) values.
+
+    Args:
+        model (Pipeline): The trained machine learning model.
+        X_data: The input data used for evaluating the model.
+        path: The path where the evaluation artifacts will be stored.
+        num_of_features (int): The number of features to be displayed in the beeswarm plot.
+
+    Attributes:
+        model (Pipeline): The trained machine learning model.
+        shap_values: The SHAP values calculated for the input data.
+        path: The path where the evaluation artifacts will be stored.
+        num_of_features (int): The number of features to be displayed in the beeswarm plot.
+    """
+
     def __init__(self, model: Pipeline, X_data, path, num_of_features: int) -> None:
         self.model = model
         self.shap_values = self.create_explainer(self.model, X_data)
@@ -16,8 +33,6 @@ class ShapEval:
         os.makedirs(self.path, exist_ok=True)
 
         self.num_of_features = num_of_features
-
-        # os.path.abspath(os.path.join(os.getcwd(),'artifact_storage', 'model_evaluation'))
 
     def create_shap_insights(self):
         """
@@ -35,12 +50,15 @@ class ShapEval:
         """
         Function to create a shap explainer. The input parameters are the model that is trained and from which you want to
         test the effect of the different features.
+
         Args:
-            num_of_features (int): This argument specifies the number of features to be displayed in the beeswarm plot. By default, it is set to 10. You can modify this value to control the number of features shown in the plot.
+            model (Pipeline): The trained machine learning model.
+            X_data: The input data used for evaluating the model.
 
-            show (bool): This argument determines whether the beeswarm plot should be displayed or saved as an image file. If show is set to True, the plot will be displayed. If show is set to False, the plot will be saved as a file named "beeswarm.png" in the current directory.
-
+        Returns:
+            The SHAP values calculated for the input data.
         """
+
         logger.info("Creating SHAP explainer")
         explainer = shap.TreeExplainer(model)
         logger.info("Creating SHAP values")
@@ -52,9 +70,10 @@ class ShapEval:
         Creates a beeswarm plot using SHAP values.
 
         Parameters:
-        - show (bool): If True, the beeswarm plot will be displayed.
-                If False, the plot will be saved as "beeswarm.png" in the current directory.
+            num_of_features (int): The number of features to be displayed in the beeswarm plot.
+            show (bool): If True, the beeswarm plot will be displayed. If False, the plot will be saved as "beeswarm.png" in the current directory.
         """
+
         _ = shap.plots.beeswarm(
             self.shap_values, max_display=num_of_features, show=False
         )
@@ -65,8 +84,7 @@ class ShapEval:
         Creates a heatmap plot using SHAP values.
 
         Parameters:
-        - show (bool): If True, the heatmap plot will be displayed.
-                If False, the plot will be saved as "heatmap.png" in the current directory.
+            show (bool): If True, the heatmap plot will be displayed. If False, the plot will be saved as "heatmap.png" in the current directory.
         """
 
         _ = shap.plots.heatmap(self.shap_values.sample(1000), show=False)
@@ -77,8 +95,7 @@ class ShapEval:
         Creates a waterfall plot using SHAP values.
 
         Parameters:
-        - show (bool): If True, the waterfall plot will be displayed.
-                If False, the plot will be saved as "waterfall.png" in the current directory.
+            show (bool): If True, the waterfall plot will be displayed. If False, the plot will be saved as "waterfall.png" in the current directory.
         """
 
         row = randint(0, len(self.shap_values) - 1)
@@ -86,6 +103,14 @@ class ShapEval:
         self.fig_handler(show, "waterfall.png")
 
     def fig_handler(self, show: bool = False, name: str = "plot.png"):
+        """
+        Helper function to handle saving or displaying the plot.
+
+        Parameters:
+            show (bool): If True, the plot will be displayed. If False, the plot will be saved.
+            name (str): The name of the plot file.
+        """
+
         logger.info(f"Saving plot as {name} in {self.path}")
         plt.title(name.split(".")[0])
         if show:

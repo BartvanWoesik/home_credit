@@ -3,7 +3,7 @@ from sklearn.metrics import get_scorer
 from sklearn.metrics import get_scorer_names
 import numpy as np
 from typing import Dict, Any, List
-from evaluate.scorers import custom_scores
+from evaluate.scorers import custom_scorers
 from my_logger.custom_logger import logger
 
 
@@ -41,8 +41,8 @@ class ModelEvaluator:
         for metric in self.metrics:
             if metric in get_scorer_names():
                 scoring[metric] = get_scorer(metric)
-            elif metric in custom_scores.keys():
-                scoring[metric] = custom_scores[metric]
+            elif metric in list(custom_scorers.keys()):
+                scoring[metric] = custom_scorers[metric]
             else:
                 logger.info(f"Metric {metric} not recognized. Ignoring.")
 
