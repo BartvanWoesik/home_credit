@@ -55,19 +55,13 @@ def test_scorer_wrong_type_int():
     # Test case 5: Wrong type of input
     y_true = np.array([1, 1, 0, 0])
     y_pred = 5
-    try:
+    with pytest.raises(TypeError):
         check_scorer_input(y_true, y_pred)
-        assert False, "Expected TypeError"
-    except TypeError:
-        assert True
 
 
 def test_scorer_wrong_type_str():
     # Test case 5: Wrong type of input
     y_true = np.array([1, 1, 0, 0])
     y_pred = "12"
-    try:
+    with pytest.raises(TypeError):
         check_scorer_input(y_true, y_pred)
-        assert False, "Expected TypeError"
-    except TypeError:
-        assert True
