@@ -3,3 +3,4 @@ mkdocs-git-authors-plugin
 mkdocs-material
 mkdocs-table-reader-plugin
 ydata_profiling
+git+https://github.com/BartvanWoesik/MyLogger.git
