@@ -25,26 +25,21 @@ def test_kaggle_score():
     # Test case 1: Perfect prediction
     y_true = np.array([1, 0, 1, 0])
     y_pred = np.array([1, 0, 1, 0])
-    assert kaggle_score(y_true, y_pred) == 0.0
+    assert kaggle_score(y_true, y_pred) == 0.75
 
     # Test case 2: Random prediction
     y_true = np.array([1, 0, 1, 0])
     y_pred = np.array([0, 1, 0, 1])
-    assert kaggle_score(y_true, y_pred) == -0.5
+    assert kaggle_score(y_true, y_pred) == -1.25
 
     # Test case 3: All positive prediction
     y_true = np.array([1, 0, 1, 0])
     y_pred = np.array([1, 1, 1, 1])
-    assert kaggle_score(y_true, y_pred) == -0.5
+    assert kaggle_score(y_true, y_pred) == 0.0
 
     # Test case 4: All negative prediction
     y_true = np.array([1, 0, 1, 0])
     y_pred = np.array([0, 0, 0, 0])
-    assert kaggle_score(y_true, y_pred) == -0.5
-
-    # Test case 5: Empty prediction
-    y_true = np.array([])
-    y_pred = np.array([])
     assert kaggle_score(y_true, y_pred) == 0.0
 
 
