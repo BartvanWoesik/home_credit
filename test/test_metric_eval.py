@@ -18,6 +18,7 @@ class ModelEvaluatorTest(unittest.TestCase):
             "accuracy": [1.0, 1.0],
             "precision": [1.0, 1.0],
             "recall": [1.0, 1.0],
+            "gini": [1.0, 1.0],
         }
 
         results = self.evaluator.evaluate(self.X, self.y, cv=2)
@@ -30,6 +31,7 @@ class ModelEvaluatorTest(unittest.TestCase):
             results["test_precision"].tolist(), expected_results["precision"]
         )
         self.assertEqual(results["test_recall"].tolist(), expected_results["recall"])
+        self.assertEqual(results["test_gini"].tolist(), expected_results["gini"])
 
 
 if __name__ == "__main__":
