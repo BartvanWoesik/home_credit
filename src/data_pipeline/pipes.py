@@ -1,5 +1,5 @@
 import pandas as pd
-import numpy as np  
+
 
 def get_last(iterable):
     """
@@ -13,16 +13,15 @@ def get_last(iterable):
     """
     if iterable is None:
         return None
-    
+
     if isinstance(iterable, (pd.DataFrame)):
-        iterable = pd.Series(iterable.iloc[0])
-    
+        iterable = pd.Series(iterable.iloc[-1])
+
     try:
         return next(reversed(list(iterable)))
     except StopIteration:
         return None
 
-import pandas as pd
 
 def get_mode(iterable):
     """
@@ -36,10 +35,11 @@ def get_mode(iterable):
     """
     if iterable is None:
         return None
-    if isinstance(iterable, (pd.DataFrame)):
-        series = pd.Series(iterable.iloc[0])
+    elif isinstance(iterable, (pd.DataFrame)):
+        assert iterable.shape[1] == 1, "DataFrame must have only one column"
+        series = pd.Series(iterable[0])
     else:
-        series = pd.Series(iterable)   
-    series = series.dropna()  
+        series = pd.Series(iterable)
+    series = series.dropna()
     mode_element = series.mode()
     return mode_element[0] if not mode_element.empty else None
