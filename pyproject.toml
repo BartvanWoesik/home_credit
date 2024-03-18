@@ -1,0 +1,12 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "Home_credit_score"
+version = "0.1.0"
+description = "Kaggle challenge for home credit score."
+
+
+[tool.poetry.dependencies]
+python = "^3.11"
