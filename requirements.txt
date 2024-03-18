@@ -8,4 +8,4 @@ scikit-learn
 shap
 ipywidgets
 shap
-git+https://github.com/BartvanWoesik/MyLogger.git@v0.1.6
+git+https://github.com/BartvanWoesik/MyLogger.git
