@@ -7,6 +7,8 @@ name = "Home_credit_score"
 version = "0.1.0"
 description = "Kaggle challenge for home credit score."
 
+[authers]
+name = "Bart"
 
 [tool.poetry.dependencies]
 python = "^3.11"
