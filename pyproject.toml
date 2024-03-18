@@ -7,7 +7,7 @@ name = "Home_credit_score"
 version = "0.1.0"
 description = "Kaggle challenge for home credit score."
 
-[authers]
+[authors]
 name = "Bart"
 
 [tool.poetry.dependencies]
