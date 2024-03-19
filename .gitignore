@@ -2,7 +2,9 @@
 *.parquet
 outputs/
 mlruns/*
+coverage_re/*
 mlartifacts/*
 artifact_storage/*
 src/modelling/__pycache__/*
 src/model/__pycache__/*
+**/.vscode
