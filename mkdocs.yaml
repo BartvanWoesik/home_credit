@@ -1,6 +1,7 @@
 site_name: Home Credit - Credit Risk Model Stability
 nav:
   - Home: index.md
+  - Contribution: contribution.md
   - Raw Data: 
     - applprev:
       - 1_0: train_applprev_1_0.md
