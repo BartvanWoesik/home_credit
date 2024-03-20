@@ -8,22 +8,22 @@ data:
       - name: numberofcontrsvalue_358L
         base_feature_name: numberofcontrsvalue_358L_max
         aggregation: 
-          _target_: numpy.max
+          _target_: data_pipeline.pipes.max
           _partial_: true
       - name: nominalrate_281L
         base_feature_name: nominalrate_281L_min
         aggregation: 
-          _target_: numpy.min
+          _target_: data_pipeline.pipes.min
           _partial_: true
       - name: classificationofcontr_400M
         base_feature_name: classificationofcontr_400M_mode
         aggregation: 
-          _target_: data_pipeline.pipes.get_mode
+          _target_: data_pipeline.pipes.mode
           _partial_: true
       - name: totaldebtoverduevalue_178A
         base_feature_name: totaldebtoverduevalue_178A_max
         aggregation: 
-          _target_: numpy.max
+          _target_: data_pipeline.pipes.max
           _partial_: true
   
   credit_bureau_a_2:
@@ -32,12 +32,12 @@ data:
       - name: collater_valueofguarantee_876L
         base_feature_name: collater_valueofguarantee_876L_mean
         aggregation: 
-          _target_: numpy.mean
+          _target_: data_pipeline.pipes.mean
           _partial_: true
       - name: pmts_overdue_1140A
         base_feature_name: pmts_overdue_1140A_max
         aggregation: 
-          _target_: numpy.max
+          _target_: data_pipeline.pipes.max
           _partial_: true
 
   applprev_2:
@@ -46,12 +46,12 @@ data:
       - name: credacc_cards_status_52L
         base_feature_name: credacc_cards_status_52L_mode
         aggregation: 
-          _target_: data_pipeline.pipes.get_mode
+          _target_: data_pipeline.pipes.mode
           _partial_: true
       - name: credacc_cards_status_52L
         base_feature_name: credacc_cards_status_52L_last
         aggregation: 
-          _target_: data_pipeline.pipes.get_last
+          _target_: data_pipeline.pipes.last
           _partial_: true
 
   debitcard_1:
@@ -61,17 +61,17 @@ data:
       - name: last180dayaveragebalance_704A
         base_feature_name: last180dayaveragebalance_704A_last
         aggregation: 
-          _target_: data_pipeline.pipes.get_last
+          _target_: data_pipeline.pipes.last
           _partial_: true
       - name: last180dayaveragebalance_704A
         base_feature_name: last180dayaveragebalance_704A_mean
         aggregation: 
-          _target_: numpy.mean
+          _target_: data_pipeline.pipes.mean
           _partial_: true
       - name: last180dayaveragebalance_704A
         base_feature_name: last180dayaveragebalance_704A_max
         aggregation: 
-          _target_: numpy.max
+          _target_: data_pipeline.pipes.max
           _partial_: true
 
 
