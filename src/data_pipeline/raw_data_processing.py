@@ -1,6 +1,6 @@
 from omegaconf import DictConfig
 from pathlib import Path
-import pandas as pd
+import polars as pl
 import os
 import hydra
 from hydra.utils import instantiate
@@ -29,35 +29,34 @@ def create_agg_specs(cfg: dict) -> dict:
     """
     aggregation_specs = {}
     for column in cfg:
-        aggregation_specs[f"{column.base_feature_name}"] = (
-            column.name,
-            instantiate(column.aggregation),
-        )
+        aggregation_specs[f"{column.base_feature_name}"] = instantiate(
+            column.aggregation
+        )(column.name)
     return aggregation_specs
 
 
-def create_aggration_dataframe(cfg: dict, df: pd.DataFrame) -> pd.DataFrame:
+def create_aggration_dataframe(cfg: dict, df: pl.DataFrame) -> pl.DataFrame:
     """
     Create an aggregated dataframe based on the given configuration and input dataframe.
 
     Args:
         cfg (dict): Configuration dictionary containing aggregation specifications.
-        df (pd.DataFrame): Input dataframe to be aggregated.
+        df (pl.DataFrame): Input dataframe to be aggregated.
 
     Returns:
-        pd.DataFrame: Aggregated dataframe.
+        pl.DataFrame: Aggregated dataframe.
 
     """
     # Remove rows where event is after the decision
     if len(cfg.time_col) > 0:
-        df = df[df[cfg.time_col[0]] < df[DATE_DECISION]]
+        df = df.filter(pl.col(cfg.time_col[0]) < pl.col(DATE_DECISION))
 
     # Create aggregation specifications
     aggregation_specs = create_agg_specs(cfg.agg_columns)
 
     # Perform the aggregation
     logger.info("Start the aggregation")
-    return df.groupby(ID).agg(**aggregation_specs).reset_index()
+    return df.group_by(ID).agg(**aggregation_specs)
 
 
 def get_orderd_data_files(data_path: Path, all_file_sources) -> Dict[str, List[str]]:
@@ -72,6 +71,7 @@ def get_orderd_data_files(data_path: Path, all_file_sources) -> Dict[str, List[s
         list: A list of dictionaries, where each dictionary contains a file source as the key and a list of corresponding
         data files as the value.
     """
+    logger.info(f"Get ordered data files from {data_path}")
     all_files = os.listdir(data_path)
     return {
         source: [file for file in all_files if source in file and file is not None]
@@ -79,7 +79,7 @@ def get_orderd_data_files(data_path: Path, all_file_sources) -> Dict[str, List[s
     }
 
 
-def read_file(cfg_columns: List, unique_cols: List, file: str) -> pd.DataFrame:
+def read_file(cfg_columns: List, unique_cols: List, file: str) -> pl.DataFrame:
     """
     Read a parquet file and return a DataFrame.
 
@@ -89,19 +89,18 @@ def read_file(cfg_columns: List, unique_cols: List, file: str) -> pd.DataFrame:
         file (str): Path to the parquet file.
 
     Returns:
-        pd.DataFrame: DataFrame containing the data from the parquet file.
+        pl.DataFrame: DataFrame containing the data from the parquet file.
     """
     if len(cfg_columns.time_col) > 0:
-        return pd.read_parquet(
+        return pl.read_parquet(
             DATA_PATH / file,
             columns=[ID] + unique_cols + [cfg_columns.time_col[0]],
         )
     else:
-        return pd.read_parquet(DATA_PATH / file, columns=[ID] + unique_cols)
+        return pl.read_parquet(DATA_PATH / file, columns=[ID] + unique_cols)
 
 
-@hydra.main(config_path="../../", config_name="config.yaml")
-def create_dataframe(cfg: DictConfig, split: str) -> pd.DataFrame:
+def create_dataframe(cfg: DictConfig, split: str) -> pl.DataFrame:
     """
     Create a dataframe by reading and joining multiple files based on the provided configuration.
 
@@ -109,7 +108,7 @@ def create_dataframe(cfg: DictConfig, split: str) -> pd.DataFrame:
         cfg (DictConfig): Configuration object containing data sources and columns.
 
     Returns:
-        pd.DataFrame: The resulting dataframe.
+        pl.DataFrame: The resulting dataframe.
     """
 
     # all_sources we want to use
@@ -118,40 +117,39 @@ def create_dataframe(cfg: DictConfig, split: str) -> pd.DataFrame:
 
     # Only keep the ID and TARGET column
     if split == "train":
-        df_base = pd.read_parquet(
+        df_base = pl.read_parquet(
             DATA_PATH / BASE_FILE, columns=[ID, TARGET, DATE_DECISION]
         )
     else:
-        df_base = pd.read_parquet(DATA_PATH / BASE_FILE, columns=[ID, DATE_DECISION])
-    df = df_base.copy()
+        df_base = pl.read_parquet(DATA_PATH / BASE_FILE, columns=[ID, DATE_DECISION])
+    df = df_base.clone()
 
     # Loop over all the files and join them to the base file
     for source, files in data_structure.items():
         cfg_columns = cfg.data[source]
-        df_all_files = pd.DataFrame()
+        df_all_files = pl.DataFrame()
         unique_cols = list(set(col.name for col in cfg_columns.agg_columns))
         # Read splitted files and join them to the base file
         for file in files:
-            df_all_files = pd.concat(
+            df_all_files = pl.concat(
                 [df_all_files, read_file(cfg_columns, unique_cols, file)]
             )
 
-        df_combined = df_base.merge(
-            df_all_files, on=ID, how="left", validate="one_to_many"
-        )
-        df = df.merge(
+        df_combined = df_base.join(df_all_files, on=ID, how="left", validate="1:m")
+        df = df.join(
             create_aggration_dataframe(cfg_columns, df_combined),
             on="case_id",
             how="left",
-            validate="one_to_many",
+            validate="1:m",
         )
 
     # Write the dataframe to feather
     logger.info("Write df to feather")
-    df.to_feather(DATA_PATH / DATA_LOCATION)
+    df.write_ipc(DATA_PATH / DATA_LOCATION)
 
 
-def main():
+@hydra.main(version_base=None, config_path="../../", config_name="config.yaml")
+def main(cfg):
     """
     This function is the entry point of the raw data processing pipeline.
     It processes the train and test data by creating dataframes and saving them in the specified locations.
@@ -162,7 +160,7 @@ def main():
         DATA_PATH = Path(os.getcwd()) / f"data/parquet_files/{split}"
         DATA_LOCATION = f"processed_{split}.feather"
         BASE_FILE = f"{split}_base.parquet"
-        create_dataframe(split)
+        create_dataframe(cfg, split)
 
 
 if __name__ == "__main__":
