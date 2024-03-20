@@ -9,3 +9,4 @@ src/modelling/__pycache__/*
 src/model/__pycache__/*
 **/.vscode
 data/*
+**/__pycache__/*
