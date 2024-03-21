@@ -1,6 +1,22 @@
 # config.yaml
 
 data:
+  static_0:
+    time_col: []
+    agg_columns:
+      - name: cardtype_51L
+        base_feature_name: cardtype_51L_last
+        aggregation: 
+          _target_: data_pipeline.pipes.last
+          _partial_: true
+      - name: credtype_322L
+        base_feature_name: credtype_322L_last
+        aggregation: 
+          _target_: data_pipeline.pipes.last
+          _partial_: true
+
+
+
   credit_bureau_a_1:
     time_col:
       - dateofrealrepmt_138D
@@ -25,7 +41,17 @@ data:
         aggregation: 
           _target_: data_pipeline.pipes.max
           _partial_: true
-  
+      - name: overdueamount_31A
+        base_feature_name: overdueamount_31A_max
+        aggregation: 
+          _target_: data_pipeline.pipes.max
+          _partial_: true
+      - name: residualamount_488A
+        base_feature_name: residualamount_488A_max
+        aggregation: 
+          _target_: data_pipeline.pipes.max
+          _partial_: true
+
   credit_bureau_a_2:
     time_col: []
     agg_columns:
@@ -38,6 +64,16 @@ data:
         base_feature_name: pmts_overdue_1140A_max
         aggregation: 
           _target_: data_pipeline.pipes.max
+          _partial_: true
+      - name: pmts_overdue_1140A
+        base_feature_name: pmts_overdue_1140A_min
+        aggregation: 
+          _target_: data_pipeline.pipes.min
+          _partial_: true
+      - name: pmts_overdue_1140A
+        base_feature_name: pmts_overdue_1140A_mean
+        aggregation: 
+          _target_: data_pipeline.pipes.mean
           _partial_: true
 
   applprev_2:
@@ -85,7 +121,7 @@ model:
   model_steps: 
     -
       _target_: model.modelorchastrator.OptBinningTransformer
-      column: ["credacc_cards_status_52L_mode", "credacc_cards_status_52L_last", "classificationofcontr_400M_mode"]
+      column: ["credacc_cards_status_52L_mode", "credacc_cards_status_52L_last", "classificationofcontr_400M_mode", "credtype_322L_last", "cardtype_51L_last"]
       
     -
       _target_: sklearn.ensemble.HistGradientBoostingClassifier
