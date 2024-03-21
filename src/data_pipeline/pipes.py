@@ -14,7 +14,7 @@ def max(col):
 
 
 def mode(col):
-    return (pl.col(col)).mode()
+    return (pl.col(col)).mode().last()
 
 
 def min(col):

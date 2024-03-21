@@ -50,13 +50,22 @@ def create_aggration_dataframe(cfg: dict, df: pl.DataFrame) -> pl.DataFrame:
     # Remove rows where event is after the decision
     if len(cfg.time_col) > 0:
         df = df.filter(pl.col(cfg.time_col[0]) < pl.col(DATE_DECISION))
+    
+    # Check if each column in cfg.agg_columns contains only null values
+    cols_all_null = [col.name for col in cfg.agg_columns if len(df[col.name].drop_nulls()) == 0]
+    
+
+    agg_columns = [col for col in cfg.agg_columns if col.name not in cols_all_null]
 
     # Create aggregation specifications
-    aggregation_specs = create_agg_specs(cfg.agg_columns)
+    aggregation_specs = create_agg_specs(agg_columns)
 
     # Perform the aggregation
     logger.info("Start the aggregation")
-    return df.group_by(ID).agg(**aggregation_specs)
+    df_agg = df.group_by(ID).agg(**aggregation_specs)
+    for col in cols_all_null:
+        df_agg.with_columns(col = None)
+    return df_agg
 
 
 def get_orderd_data_files(data_path: Path, all_file_sources) -> Dict[str, List[str]]:
