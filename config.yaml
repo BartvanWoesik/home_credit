@@ -170,14 +170,16 @@ model:
     -
       _target_: model.modelorchastrator.OptBinningTransformer
       column: ["housetype_905L_last", "education_927M_last", "credacc_cards_status_52L_mode", "familystate_447L_last", "credacc_cards_status_52L_last", "classificationofcontr_400M_mode", "credtype_322L_last", "cardtype_51L_last"]
-      
+      max_bins: 100
+      min_prebin_size: 0.01
+
     -
       _target_: sklearn.ensemble.HistGradientBoostingClassifier
-      learning_rate: 0.1
-      verbose: 1
+      learning_rate: 0.01
+      verbose: 0
       class_weight: balanced
       max_iter: 100
-      l2_regularization: 0.25
+      l2_regularization: 0.1
       early_stopping: True
       max_leaf_nodes: 100
     
