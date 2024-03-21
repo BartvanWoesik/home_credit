@@ -39,7 +39,7 @@ def main(cfg):
 
         dataset = Dataset(data=df, data_splitter=data_splitter, target_column="target")
 
-        model_orchestrator = ModelOrchestrator(cfg.model)
+        model_orchestrator = ModelOrchestrator(cfg)
 
         model = model_orchestrator.modelpipeline
 
@@ -52,7 +52,7 @@ def main(cfg):
         # Use cross evaluation to evaluate the model on training data
         logger.info("Creating a cross-validation evaluator for the model.")
         metrics = ["roc_auc_ovr", "f1", "gini", "kaggle"]
-        cv_eval = ModelEvaluator(model.pipeline[-1], metrics)
+        cv_eval = ModelEvaluator(model[-1], metrics)
         cv_eval_results = cv_eval.evaluate(
             model.transform_without_predictor(dataset.X), dataset.y
         )
@@ -66,6 +66,8 @@ def main(cfg):
         test_data = pd.read_feather(
             base_path / "data/parquet_files/test/processed_test.feather"
         )
+
+        
         predictions = model.predict_proba(test_data.reset_index())
         df_predictions = pd.DataFrame(
             {"case_id": test_data["case_id"], "predictions": predictions.T[1]}
@@ -74,7 +76,7 @@ def main(cfg):
 
         # Create a SHAP explainer
         shap_eval = ShapEval(
-            model.pipeline[-1],
+            model[-1],
             model.transform_without_predictor(dataset.X_train[:1000]),
             base_path,
             num_of_features=10,

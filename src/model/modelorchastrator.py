@@ -2,40 +2,34 @@ from sklearn.pipeline import Pipeline
 from hydra.utils import instantiate
 from sklearn.base import BaseEstimator, TransformerMixin
 from optbinning import BinningProcess
+from omegaconf import DictConfig, OmegaConf
 
 
 class ModelOrchestrator:
     def __init__(self, cfg):
-        self.modelpipeline = self.create_model(cfg.model_steps)
+        self.modelpipeline = CustomModelPipeline.create_from_config(cfg)
 
-    def create_model(self, modelsteps: list):
-        pipeline = Pipeline(steps=[])
+  
+
+
+class CustomModelPipeline(Pipeline):
+   
+
+   @classmethod
+   def create_from_config(cls, cfg: DictConfig | OmegaConf) -> "CustomModelPipeline":
+        # First create list of tuples from the modelsteps list
         pipeline_list = []
-        for i, step in enumerate(modelsteps):
+        for i, step in enumerate(cfg.model.model_steps):
             pipeline_list.append((str(i), instantiate(step)))
-        pipeline = Pipeline(steps=pipeline_list)
-        return CustomModelPipeline(pipeline)
 
-
-class CustomModelPipeline:
-    def __init__(self, pipeline):
-        self.pipeline = pipeline
-
-    def fit(self, X, y):
-        # Add your code here to fit the model
-        self.pipeline.fit(X, y)
-
-    def transform_without_predictor(self, X):
+        # Create instance of cls
+        custom_pipeline = cls(steps=pipeline_list)
+        return custom_pipeline
+   
+   def transform_without_predictor(self, X):
         # Add your code here to transform the data
-        return self.pipeline[:-1].transform(X)
+        return self[:-1].transform(X)
 
-    def predict(self, X):
-        # Add your code here to make predictions
-        return self.pipeline.predict(X)
-
-    def predict_proba(self, X):
-        # Add your code here to make probability predictions
-        return self.pipeline.predict_proba(X)
 
 
 class OptBinningTransformer(BaseEstimator, TransformerMixin):

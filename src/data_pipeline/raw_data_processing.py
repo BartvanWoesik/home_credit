@@ -16,7 +16,7 @@ TARGET = "target"
 DATE_DECISION = "date_decision"
 
 
-def create_agg_specs(cfg: dict) -> dict:
+def create_agg_specs(cfg: list) -> dict:
     """
     Create aggregation specifications based on the given configuration.
 
@@ -52,10 +52,10 @@ def create_aggration_dataframe(cfg: dict, df: pl.DataFrame) -> pl.DataFrame:
         df = df.filter(pl.col(cfg.time_col[0]) < pl.col(DATE_DECISION))
     
     # Check if each column in cfg.agg_columns contains only null values
-    cols_all_null = [col.name for col in cfg.agg_columns if len(df[col.name].drop_nulls()) == 0]
+    cols_all_null = [col.base_feature_name for col in cfg.agg_columns if len(df[col.name].drop_nulls()) == 0]
     
 
-    agg_columns = [col for col in cfg.agg_columns if col.name not in cols_all_null]
+    agg_columns = [col for col in cfg.agg_columns if col.base_feature_name not in cols_all_null]
 
     # Create aggregation specifications
     aggregation_specs = create_agg_specs(agg_columns)
@@ -63,8 +63,10 @@ def create_aggration_dataframe(cfg: dict, df: pl.DataFrame) -> pl.DataFrame:
     # Perform the aggregation
     logger.info("Start the aggregation")
     df_agg = df.group_by(ID).agg(**aggregation_specs)
+    del df
     for col in cols_all_null:
-        df_agg.with_columns(col = None)
+        df_agg = df_agg.with_columns(placeholder = None)
+        df_agg = df_agg.rename({"placeholder": col})
     return df_agg
 
 
