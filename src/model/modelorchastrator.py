@@ -33,12 +33,13 @@ class CustomModelPipeline(Pipeline):
 
 
 class OptBinningTransformer(BaseEstimator, TransformerMixin):
-    def __init__(self, column):
+    def __init__(self, column, *args, **kwargs):
         self.column = list(column)
+        self.binning_kwargs = kwargs
 
     def fit(self, X, y=None):
         # Fit OptBinning on the specified column
-        self.binning_process = BinningProcess(variable_names=self.column)
+        self.binning_process = BinningProcess(variable_names=self.column, **self.binning_kwargs )
         self.binning_process.fit(X[self.column].values, y)
         return self
 
