@@ -1,7 +1,7 @@
 from sklearn.model_selection import ShuffleSplit
 from typing import Dict, Tuple
 import pandas as pd
-
+from pathlib import Path
 
 def read_data(file_path: str):
     return pd.read_feather(file_path)
@@ -10,6 +10,9 @@ def read_data(file_path: str):
 def drop_redundant_columns(df: pd.DataFrame, columns: list):
     return df.drop(columns=columns)
 
+
+def load_data(file_path: Path) -> pd.DataFrame:
+    return pd.read_feather(file_path / "data/parquet_files/train/processed_train.feather")
 
 def data_splitter(
     X: pd.DataFrame,

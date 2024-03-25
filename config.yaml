@@ -176,6 +176,7 @@ model:
     -
       _target_: sklearn.ensemble.HistGradientBoostingClassifier
       learning_rate: 0.01
+      categorical_features:  ["housetype_905L_last", "education_927M_last", "credacc_cards_status_52L_mode", "familystate_447L_last", "credacc_cards_status_52L_last", "classificationofcontr_400M_mode", "credtype_322L_last", "cardtype_51L_last"]
       verbose: 0
       class_weight: balanced
       max_iter: 1000
