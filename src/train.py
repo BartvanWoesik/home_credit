@@ -15,32 +15,35 @@ from evaluate.metric_eval import ModelEvaluator
 from evaluate.shap_eval import ShapEval
 from my_logger.custom_logger import logger
 
+from data_pipeline.pipelinesteps import load_data
+
 mlflow.set_tracking_uri("http://127.0.0.1:5000/")
+from functools import partial
 
 
-@hydra.main(config_path="../", config_name="config.yaml")
+@hydra.main(config_path="../conf", config_name="config.yaml")
 def main(cfg):
+
     # Get the relative path of the file
     file_path = Path(os.path.abspath(__file__))
     base_path = file_path.parent.parent
-    print("Base path:", base_path)
+
     # Start an MLflow run
     commit_message = (
         subprocess.check_output(["git", "log", "-1", "--pretty=%B"]).decode().strip()
     )
-    with mlflow.start_run(experiment_id="264751226398184019", run_name=commit_message):
+
+    with mlflow.start_run(experiment_id="107882983913598320", run_name=commit_message):
+        
         # Create dataset
-        data_pipeline = instantiate(cfg.data_pipeline)
-
-        df = pd.read_feather(
-            base_path / "data/parquet_files/train/processed_train.feather"
+        dataset = Dataset.create_from_pipeline(
+                partial(load_data, base_path), 
+                instantiate(cfg.data_pipeline),
+                data_splitter=data_splitter,
+                target_column="target",
         )
-        df = data_pipeline.apply(df)
 
-        dataset = Dataset(data=df, data_splitter=data_splitter, target_column="target")
-
-        model_orchestrator = ModelOrchestrator(cfg.model)
-
+        model_orchestrator = ModelOrchestrator(cfg)
         model = model_orchestrator.modelpipeline
 
         # Train your model
@@ -52,7 +55,7 @@ def main(cfg):
         # Use cross evaluation to evaluate the model on training data
         logger.info("Creating a cross-validation evaluator for the model.")
         metrics = ["roc_auc_ovr", "f1", "gini", "kaggle"]
-        cv_eval = ModelEvaluator(model.pipeline[-1], metrics)
+        cv_eval = ModelEvaluator(model[-1], metrics)
         cv_eval_results = cv_eval.evaluate(
             model.transform_without_predictor(dataset.X), dataset.y
         )
@@ -66,6 +69,8 @@ def main(cfg):
         test_data = pd.read_feather(
             base_path / "data/parquet_files/test/processed_test.feather"
         )
+
+
         predictions = model.predict_proba(test_data.reset_index())
         df_predictions = pd.DataFrame(
             {"case_id": test_data["case_id"], "predictions": predictions.T[1]}
@@ -74,7 +79,7 @@ def main(cfg):
 
         # Create a SHAP explainer
         shap_eval = ShapEval(
-            model.pipeline[-1],
+            model[-1],
             model.transform_without_predictor(dataset.X_train[:1000]),
             base_path,
             num_of_features=10,
