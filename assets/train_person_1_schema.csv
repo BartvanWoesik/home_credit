@@ -1,0 +1,38 @@
+Variable,Description
+case_id, Id to merge on
+birth_259D,Date of birth of the person.
+birthdate_87D,Birth date of the person.
+childnum_185L,Number of children of the applicant.
+contaddr_district_15M,Zip code of a contact person's address.
+contaddr_matchlist_1032L,Indicates whether the contact address is found in a code list.
+contaddr_smempladdr_334L,Indicates whether the contact address is the same as the employment address.
+contaddr_zipcode_807M,Zip code of contact address.
+education_927M,Education level of the person.
+empl_employedfrom_271D,Start date of employment.
+empl_employedtotal_800L,Employment length of a person.
+empl_industry_691L,Employment Industry of the person.
+empladdr_district_926M,District where the employer's address is located.
+empladdr_zipcode_114M,Zipcode of employer's address.
+familystate_447L,Family state of the person.
+gender_992L,Gender of a person.
+housetype_905L,House type of the person.
+housingtype_772L,Type of housing of the person.
+incometype_1044T,Type of income of the person
+isreference_387L,Flag indicating whether the person is a reference contact.
+language1_981M,The primary language of the person.
+mainoccupationinc_384A,Amount of the main income of the client.
+maritalst_703L,Marital status of the client.
+num_group1, 0
+personindex_1023L,Order of the person specified on the application form.
+persontype_1072L,Person type.
+persontype_792L,Person type.
+registaddr_district_1083M,District of person's registered address.
+registaddr_zipcode_184M,Registered address's zip code of a person.
+relationshiptoclient_415T,Relationship to the client.
+relationshiptoclient_642T,Relationship to the client.
+remitter_829L,Flag indicating whether the client is a remitter.
+role_1084L,Type of contact role.
+role_993L,Person's role.
+safeguarantyflag_411L,Flag indicating if client is using a flexible product with additional safeguard garanty.
+sex_738L,Gender of the client.
+type_25L,Contact type of a person.

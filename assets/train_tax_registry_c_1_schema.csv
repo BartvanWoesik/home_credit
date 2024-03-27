@@ -1,0 +1,6 @@
+Variable,Description
+case_id, Id to merge on
+employername_160M,Employer's name.
+num_group1, 0
+pmtamount_36A,Tax deductions amount for credit bureau payments.
+processingdate_168D,Date when the tax deduction is processed.

@@ -1,0 +1,20 @@
+Variable,Description
+case_id, Id to merge on
+collater_typofvalofguarant_298M,Collateral valuation type (active contract).
+collater_typofvalofguarant_407M,Collateral valuation type (closed contract).
+collater_valueofguarantee_1124L,Value of collateral for active contract.
+collater_valueofguarantee_876L,Value of collateral for closed contract.
+collaterals_typeofguarante_359M,Type of collateral that was used as a guarantee for a closed contract.
+collaterals_typeofguarante_669M,Collateral type for the active contract.
+num_group1, 0
+num_group2, 0
+pmts_dpd_1073P,"Days past due of the payment for the active contract (num_group1 - existing contract, num_group2 - payment)."
+pmts_dpd_303P,"Days past due of the payment for terminated contract according to credit bureau (num_group1 - terminated contract, num_group2 - payment)."
+pmts_month_158T,"Month of payment for a closed contract (num_group1 - existing contract, num_group2 - payment)."
+pmts_month_706T,"Month of payment for active contract (num_group1 - terminated contract, num_group2 - payment)."
+pmts_overdue_1140A,"Overdue payment for an active contract (num_group1 - existing contract, num_group2 - payment)."
+pmts_overdue_1152A,"Overdue payment for a closed contract (num_group1 - terminated contract, num_group2 - payment)."
+pmts_year_1139T,"Year of payment for an active contract (num_group1 - existing contract, num_group2 - payment)."
+pmts_year_507T,"Payment year for a closed credit contract (num_group1 - terminated contract, num_group2 - payment)."
+subjectroles_name_541M,"Name of subject role in closed credit contract (num_group1 - terminated contract, num_group2 - subject roles)."
+subjectroles_name_838M,"Name of subject role in active credit contract (num_group1 - existing contract, num_group2 - subject roles)."

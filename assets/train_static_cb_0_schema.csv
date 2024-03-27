@@ -1,0 +1,54 @@
+Variable,Description
+case_id, Id to merge on
+assignmentdate_238D,Tax authority data - date of assignment.
+assignmentdate_4527235D,Tax authority data - Date of assignment.
+assignmentdate_4955616D,Tax authority assignment date.
+birthdate_574D,Client's date of birth (credit bureau data).
+contractssum_5085716L,Total sum of values of contracts retrieved from external credit bureau.
+dateofbirth_337D,Client's date of birth.
+dateofbirth_342D,Client's date of birth.
+days120_123L,Number of credit bureau queries for the last 120 days.
+days180_256L,Number of credit bureau queries for last 180 days.
+days30_165L,Number of credit bureau queries for the last 30 days.
+days360_512L,Number of Credit Bureau queries for last 360 days.
+days90_310L,Number of credit bureau queries for the last 90 days.
+description_5085714M,Categorization of clients by credit bureau.
+education_1103M,Level of education of the client provided by external source.
+education_88M,Education level of the client.
+firstquarter_103L,Number of results obtained from credit bureau in the first quarter.
+for3years_128L,Number of rejected applications in the past 3 years.
+for3years_504L,Client's credit history data over the last three years.
+for3years_584L,Number of cancellations in the last 3 years.
+formonth_118L,Number of rejections in a month.
+formonth_206L,Number of cancelations in the previous month.
+formonth_535L,Credit history for the last month.
+forquarter_1017L,Number of cancellations recorded in the credit bureau in the last quarter.
+forquarter_462L,Number of credit applications that were rejected in the last quarter.
+forquarter_634L,Credit history for the last quarter.
+fortoday_1092L,Client's credit history for today.
+forweek_1077L,Number of cancelations in the last week.
+forweek_528L,Credit history for the last week.
+forweek_601L,Number of rejected applications in the last week.
+foryear_618L,Number of application rejections in the previous year.
+foryear_818L,Number of cancelations that occurred in last year.
+foryear_850L,Credit history for the last year.
+fourthquarter_440L,Number of results in fourth quarter.
+maritalst_385M,Marital status of the client.
+maritalst_893M,Marital status of the client
+numberofqueries_373L,Number of queries to credit bureau.
+pmtaverage_3A,Average of tax deductions.
+pmtaverage_4527227A,Average of tax deductions.
+pmtaverage_4955615A,Average of tax deductions.
+pmtcount_4527229L,Number of tax deductions.
+pmtcount_4955617L,Number of tax deductions.
+pmtcount_693L,Number of tax deductions.
+pmtscount_423L,Number of tax deduction payments.
+pmtssum_45A,Sum of tax deductions for the client.
+requesttype_4525192L,Tax authority request type.
+responsedate_1012D,Tax authority's response date.
+responsedate_4527233D,Tax authority's response date.
+responsedate_4917613D,Tax authority's response date.
+riskassesment_302T,Estimated probability that the client will default on their credit obligation within the next year.
+riskassesment_940T,Estimate of client's creditworthiness.
+secondquarter_766L,Number of results in second quarter.
+thirdquarter_1082L,Number of results in third quarter.
