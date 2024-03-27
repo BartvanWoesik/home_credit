@@ -23,6 +23,9 @@ all_features:
   - numinstlswithdpd5_4187116L_last
   - numinstlsallpaid_934L_last
   - numinstls_657L_last
+  - cardtype_51L_mode
+  - avginstallast24m_3658937A_last
+  - mainoccupationinc_437A_last
 
 cat_features:
   - housetype_905L_last
@@ -33,5 +36,6 @@ cat_features:
   - classificationofcontr_400M_mode
   - credtype_322L_last
   - cardtype_51L_last
+  - cardtype_51L_mode
 
   

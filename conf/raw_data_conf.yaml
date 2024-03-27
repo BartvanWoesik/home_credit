@@ -51,6 +51,17 @@ data:
         aggregation: 
           _target_: data_pipeline.pipes.last
           _partial_: true
+      - name: cardtype_51L
+        base_feature_name: cardtype_51L_mode
+        aggregation: 
+          _target_: data_pipeline.pipes.mode
+          _partial_: true
+      - name: avginstallast24m_3658937A
+        base_feature_name: avginstallast24m_3658937A_last
+        aggregation: 
+          _target_: data_pipeline.pipes.last
+          _partial_: true
+      
 
 
 
@@ -124,6 +135,16 @@ data:
           _partial_: true
       - name: credacc_cards_status_52L
         base_feature_name: credacc_cards_status_52L_last
+        aggregation: 
+          _target_: data_pipeline.pipes.last
+          _partial_: true
+
+
+  applprev_1:
+    time_col: []
+    agg_columns:
+      - name: mainoccupationinc_437A
+        base_feature_name: mainoccupationinc_437A_last
         aggregation: 
           _target_: data_pipeline.pipes.last
           _partial_: true
