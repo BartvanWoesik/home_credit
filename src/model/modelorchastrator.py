@@ -34,6 +34,16 @@ class ModelOrchestrator:
     
 
     def create_tuning_params(self, cfg):
+        """
+        Create tuning parameters based on the provided configuration.
+
+        Args:
+            cfg (object): The configuration object containing hyperparameters.
+
+        Returns:
+            dict: A dictionary containing the tuning parameters for each step.
+
+        """
         params = {}
         for step in cfg.hyperparameters:
             params_step = {}
@@ -50,6 +60,7 @@ class ModelOrchestrator:
                     # Handle the case when 'type' key is missing in cfg[parameter]
                     params_step[parameter] = short_cfg[parameter].default
             params[step] = params_step
+        return params
         
 
   
@@ -89,7 +100,7 @@ class CustomModelPipeline(Pipeline):
         for i, step in enumerate(cfg.model.model_steps):
             _step_dict = next(iter(step.items()))
             if params is not None:
-                pipeline_list.append((str(i), instantiate(_step_dict[1],  **(params[step]))))
+                pipeline_list.append((str(i), instantiate(_step_dict[1],  **(params[_step_dict[0]]))))
             else:
                 pipeline_list.append((str(i), instantiate(_step_dict[1])))
 
