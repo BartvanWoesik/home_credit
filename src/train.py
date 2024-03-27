@@ -21,7 +21,7 @@ mlflow.set_tracking_uri("http://127.0.0.1:5000/")
 from functools import partial
 
 
-@hydra.main(config_path="../", config_name="config.yaml")
+@hydra.main(config_path="../conf", config_name="config.yaml")
 def main(cfg):
 
     # Get the relative path of the file
@@ -33,7 +33,7 @@ def main(cfg):
         subprocess.check_output(["git", "log", "-1", "--pretty=%B"]).decode().strip()
     )
 
-    with mlflow.start_run(experiment_id="264751226398184019", run_name=commit_message):
+    with mlflow.start_run(experiment_id="107882983913598320", run_name=commit_message):
         
         # Create dataset
         dataset = Dataset.create_from_pipeline(

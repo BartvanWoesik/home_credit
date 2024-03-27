@@ -103,7 +103,7 @@ def read_file(cfg_columns: List, unique_cols: List, file: str) -> pl.DataFrame:
         pl.DataFrame: DataFrame containing the data from the parquet file.
     """
     if len(cfg_columns.time_col) > 0:
-        return pl.read_parquet(
+        return pl.read_parquet      (
             DATA_PATH / file,
             columns=[ID] + unique_cols + [cfg_columns.time_col[0]],
         )
@@ -159,7 +159,7 @@ def create_dataframe(cfg: DictConfig, split: str) -> pl.DataFrame:
     df.write_ipc(DATA_PATH / DATA_LOCATION)
 
 
-@hydra.main(version_base=None, config_path="../../", config_name="config.yaml")
+@hydra.main(version_base=None, config_path="../../conf", config_name="raw_data_conf.yaml")
 def main(cfg):
     """
     This function is the entry point of the raw data processing pipeline.

@@ -4,7 +4,9 @@ import pandas as pd
 from pathlib import Path
 
 def read_data(file_path: str):
-    return pd.read_feather(file_path)
+    df = pd.read_feather(file_path)
+    df = df.set_index('case_id')
+    return df
 
 
 def drop_redundant_columns(df: pd.DataFrame, columns: list):

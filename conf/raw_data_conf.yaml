@@ -1,5 +1,3 @@
-# config.yaml
-
 data:
   person_1:
     time_col: []
@@ -38,6 +36,22 @@ data:
         aggregation: 
           _target_: data_pipeline.pipes.last
           _partial_: true
+      - name: numinstls_657L
+        base_feature_name: numinstls_657L_last
+        aggregation: 
+          _target_: data_pipeline.pipes.last
+          _partial_: true
+      - name: numinstlsallpaid_934L
+        base_feature_name: numinstlsallpaid_934L_last
+        aggregation: 
+          _target_: data_pipeline.pipes.last
+          _partial_: true
+      - name: numinstlswithdpd5_4187116L
+        base_feature_name: numinstlswithdpd5_4187116L_last
+        aggregation: 
+          _target_: data_pipeline.pipes.last
+          _partial_: true
+
 
 
 
@@ -133,54 +147,3 @@ data:
         aggregation: 
           _target_: data_pipeline.pipes.max
           _partial_: true
-
-
-
-data_pipeline:
- _target_: data_pipeline.datapipeline.PandasDataPipeline
- steps: []
-
-
-model:
-  model_steps: 
-    -
-      _target_: model.feature_selector.FeatureSelector
-      features:
-        - childnum_185L_mean
-        - housetype_905L_last
-        - familystate_447L_last
-        - education_927M_last
-        - cardtype_51L_last
-        - credtype_322L_last
-        - numberofcontrsvalue_358L_max
-        - nominalrate_281L_min
-        - totaldebtoverduevalue_178A_max
-        - overdueamount_31A_max
-        - residualamount_488A_max
-        - collater_valueofguarantee_876L_mean
-        - pmts_overdue_1140A_max
-        - pmts_overdue_1140A_min
-        - pmts_overdue_1140A_mean
-        - credacc_cards_status_52L_mode
-        - credacc_cards_status_52L_last
-        - last180dayaveragebalance_704A_last
-        - last180dayaveragebalance_704A_mean
-        - last180dayaveragebalance_704A_max
-        - classificationofcontr_400M_mode
-    -
-      _target_: model.modelorchastrator.OptBinningTransformer
-      column: ["housetype_905L_last", "education_927M_last", "credacc_cards_status_52L_mode", "familystate_447L_last", "credacc_cards_status_52L_last", "classificationofcontr_400M_mode", "credtype_322L_last", "cardtype_51L_last"]
-      max_n_prebins: 100
-      min_prebin_size: 0.01
-
-    -
-      _target_: sklearn.ensemble.HistGradientBoostingClassifier
-      learning_rate: 0.01
-      categorical_features:  ["housetype_905L_last", "education_927M_last", "credacc_cards_status_52L_mode", "familystate_447L_last", "credacc_cards_status_52L_last", "classificationofcontr_400M_mode", "credtype_322L_last", "cardtype_51L_last"]
-      verbose: 0
-      class_weight: balanced
-      max_iter: 1000
-      l2_regularization: 0.3
-      early_stopping: True
-      max_leaf_nodes: 100
-    

@@ -31,12 +31,12 @@ def kaggle_score(y_true: np.array, y_pred: np.array) -> float:
     - Kaggle score: float
     """
     check_scorer_input(y_true, y_pred)
-    return gini_score(y_true, y_pred) - 0.5 * np.std(y_pred)
+    return gini_score(y_true, y_pred) - 0.5 * np.std(y_true - y_pred)
 
 
 def check_scorer_input(y_true: List[int], y_pred: list[int]) -> None:
-    if not isinstance(y_true, np.ndarray) or not isinstance(y_pred, np.ndarray):
-        raise TypeError("Both y_true and y_pred must be numpy arrays")
+    # if not isinstance(y_true, np.ndarray) or not isinstance(y_pred, np.ndarray):
+    #     raise TypeError("Both y_true and y_pred must be numpy arrays")
     assert len(y_true) == len(y_pred)
     assert len(y_true) > 0
 
