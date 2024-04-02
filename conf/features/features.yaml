@@ -26,6 +26,7 @@ all_features:
   - cardtype_51L_mode
   - avginstallast24m_3658937A_last
   - mainoccupationinc_437A_last
+  - downpmt_116A_last
 
 cat_features:
   - housetype_905L_last

@@ -16,6 +16,9 @@ from evaluate.shap_eval import ShapEval
 from my_logger.custom_logger import logger
 
 from data_pipeline.pipelinesteps import load_data
+from evaluate.plots.density import plot_density
+from sklearn.metrics import PrecisionRecallDisplay
+import matplotlib.pyplot as plt
 
 mlflow.set_tracking_uri("http://127.0.0.1:5000/")
 from functools import partial
@@ -44,53 +47,59 @@ def main(cfg):
         )
 
         model_orchestrator = ModelOrchestrator(cfg)
-        model = model_orchestrator.modelpipeline
-
-        # Train your model
-        model.fit(dataset.X_train, dataset.y_train)
+        model = model_orchestrator.create_pipe_line()
 
         mlflow.sklearn.log_model(model, "model")
         mlflow.sklearn.save_model(model, "model")
 
         # Use cross evaluation to evaluate the model on training data
         logger.info("Creating a cross-validation evaluator for the model.")
-        metrics = ["roc_auc_ovr", "f1", "gini", "kaggle"]
-        cv_eval = ModelEvaluator(model[-1], metrics)
+        metrics = ["roc_auc", "gini", "kaggle"]
+        cv_eval = ModelEvaluator(model, metrics)
         cv_eval_results = cv_eval.evaluate(
-            model.transform_without_predictor(dataset.X), dataset.y
+            dataset.X_train, dataset.y_train
         )
         for metric, values in cv_eval_results.items():
-            print(metric)
-            if metric.removeprefix("test_") in metrics:
-                mlflow.log_metric(f"cv_{metric}", np.mean(values))
+            if (m := metric.removeprefix("test_")) in metrics:
+                mlflow.log_metric(f"cv_{m}", np.mean(values))
+        
 
-        output_dir = base_path / "artifact_storage/predictions"
-        os.makedirs(output_dir, exist_ok=True)
-        test_data = pd.read_feather(
-            base_path / "data/parquet_files/test/processed_test.feather"
-        )
-
-
-        predictions = model.predict_proba(test_data.reset_index())
-        df_predictions = pd.DataFrame(
-            {"case_id": test_data["case_id"], "predictions": predictions.T[1]}
-        )
-        df_predictions.to_csv(output_dir / "predictions.csv", index=False)
-
+        logger.info("Creating a shap plots for the model.")
+        model.fit(dataset.X_train, dataset.y_train)
         # Create a SHAP explainer
         shap_eval = ShapEval(
             model[-1],
-            model.transform_without_predictor(dataset.X_train[:1000]),
+            model.transform_without_predictor(dataset.X_test[:1000]),
             base_path,
             num_of_features=10,
         )
         shap_eval.create_shap_insights()
 
-        mlflow.log_artifact(output_dir / "predictions.csv")
         mlflow.log_artifact(base_path / "artifact_storage/model_evaluation/")
 
-        # Print the run ID
-        print("MLflow run ID:", mlflow.active_run().info.run_id)
+
+
+
+        dens_path = 'Density/'
+        pr_path = 'Precision-Recall/'
+        for split_name, (X, y) in dataset.splits.items():
+
+            # Create Precision-Recall curve
+            display = PrecisionRecallDisplay.from_estimator(
+                model, X, y,  plot_chance_level=True
+            )
+            _ = display.ax_.set_title(f"2-class Precision-Recall curve - {split_name}")
+            plt.savefig(base_path/ "artifact_storage" / "plot"/   pr_path  / f'pr-{split_name}.jpeg')
+            mlflow.log_artifact(base_path/ "artifact_storage" / "plot"/  pr_path / f'pr-{split_name}.jpeg', artifact_path=pr_path[:-1])
+
+            plot_density(
+                model.predict_proba(X),
+                y,
+                base_path/ "artifact_storage" / "plot"/ dens_path,
+                f'density-{split_name}.jpeg',
+                threshold=0.5,
+            )
+            mlflow.log_artifact(base_path/ "artifact_storage" / "plot"/ dens_path / f'density-{split_name}.jpeg', artifact_path=dens_path[:-1])
 
 
 if __name__ == "__main__":

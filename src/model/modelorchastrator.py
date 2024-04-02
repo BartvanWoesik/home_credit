@@ -1,3 +1,6 @@
+from typing import Iterable
+from numpy import ndarray
+from pandas import DataFrame
 from sklearn.pipeline import Pipeline
 from hydra.utils import instantiate
 from sklearn.base import BaseEstimator, TransformerMixin
@@ -15,13 +18,12 @@ class ModelOrchestrator:
         trial (optuna.Trial, optional): Optuna trial object for hyperparameter tuning. Defaults to None.
     """
 
-    def __init__(self, cfg, trial=None):
+    def __init__(self, cfg, trial=None, tuning_params=None):
         self.trial = trial
         self.cfg = cfg
-        self.tuning_params = None
+        self.tuning_params = tuning_params 
         if trial:
             self.tuning_params = self.create_tuning_params(cfg)
-        self.modelpipeline = CustomModelPipeline.create_from_config(cfg)
 
     def create_tuning_pipeline(self):
         """
@@ -32,6 +34,14 @@ class ModelOrchestrator:
         """
         return self.modelpipeline.create_from_config(self.cfg, self.tuning_params)
     
+    def create_pipe_line(self):
+        """
+        Create a pipeline based on the model pipeline and configuration.
+
+        Returns:
+            sklearn.pipeline.Pipeline: Tuning pipeline.
+        """
+        return CustomModelPipeline.create_from_config(self.cfg)
 
     def create_tuning_params(self, cfg):
         """
@@ -83,6 +93,9 @@ class CustomModelPipeline(Pipeline):
         """
         # Add your code here to transform the data
         return self[:-1].transform(X)
+    
+    def predict(self, X: list[str] | ndarray | Iterable | DataFrame, **predict_params) -> ndarray | tuple[ndarray, ndarray]:
+        return super().predict_proba(X, **predict_params).T[1]
 
     @classmethod
     def create_from_config(cls, cfg: DictConfig | OmegaConf, params = None) -> "CustomModelPipeline":
@@ -113,30 +126,24 @@ class CustomModelPipeline(Pipeline):
 
 
 class OptBinningTransformer(BaseEstimator, TransformerMixin):
-    def __init__(self, column = [], max_n_prebins = 100, min_prebin_size = 0.1):
-        self.column = list(column)
+    def __init__(self, variable_names=None, max_n_prebins=100, min_prebin_size=0.1, random_state=None):
+        self.variable_names = variable_names if variable_names is not None else []
         self.max_n_prebins = max_n_prebins
         self.min_prebin_size = min_prebin_size
+        self.random_state = random_state
+        self.binning_process = BinningProcess(variable_names=list(self.variable_names), max_n_prebins=self.max_n_prebins, min_prebin_size=self.min_prebin_size )
 
     def fit(self, X, y=None):
         # Fit OptBinning on the specified column
-        self.binning_process = BinningProcess(variable_names=self.column, max_n_prebins=self.max_n_prebins, min_prebin_size=self.min_prebin_size )
-        self.binning_process.fit(X[self.column].values, y)
+        self.binning_process.fit(X[self.variable_names].values, y)
         return self
 
     def transform(self, X):
         # Transform the specified column using OptBinning
         X_transformed = X.copy()
-        transformed_column = self.binning_process.transform(X[self.column].values)
-        X_transformed[self.column] = transformed_column
+        transformed_column = self.binning_process.transform(X[list(self.variable_names)].values)
+        X_transformed[list(self.variable_names)] = transformed_column
         return X_transformed
     
-    @classmethod
-    def instantiate_trial(cls, cfg, trial):
-        return cls(column=cfg.column.default, 
-                    max_n_prebins=trial.suggest_int("max_n_prebins", cfg.max_n_prebins.min, cfg.max_n_prebins.max),
-                    min_prebin_size=cfg.min_prebin_size.default)
 
-class HistBooster(HistGradientBoostingClassifier):
 
-    pass
