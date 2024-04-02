@@ -2,7 +2,8 @@ import numpy as np
 from sklearn.metrics import roc_auc_score
 from sklearn.metrics import make_scorer
 from typing import List
-
+from sklearn.metrics import f1_score
+import pandas as pd
 
 def gini_score(y_true: List[int], y_pred: list[int]) -> float:
     """
@@ -35,14 +36,15 @@ def kaggle_score(y_true: np.array, y_pred: np.array) -> float:
 
 
 def check_scorer_input(y_true: list[int], y_pred: list[int]) -> None:
-    if not isinstance(y_true, (np.ndarray, list)) or not isinstance(y_pred, (np.ndarray, list)):
+    if not isinstance(y_true, (np.ndarray, list, pd.Series)) or not isinstance(y_pred, (np.ndarray, list, pd.Series)):
         raise TypeError("Both y_true and y_pred must be numpy arrays or lists")
     assert len(y_true) == len(y_pred)
     assert len(y_true) > 0
 
 
+
 # Dictionary of custom scorers
 custom_scorers = {
-    "gini": make_scorer(gini_score, greater_is_better=True),
-    "kaggle": make_scorer(kaggle_score, greater_is_better=True),
+    "gini": make_scorer(gini_score, greater_is_better=True, response_method = "predict_proba"),
+    "kaggle": make_scorer(kaggle_score, greater_is_better=True, response_method = "predict_proba"),
 }

@@ -61,6 +61,11 @@ data:
         aggregation: 
           _target_: data_pipeline.pipes.last
           _partial_: true
+      - name: downpmt_116A
+        base_feature_name: downpmt_116A_last
+        aggregation: 
+          _target_: data_pipeline.pipes.last
+          _partial_: true
       
 
 

@@ -12,6 +12,11 @@ def read_data(file_path: str):
 def drop_redundant_columns(df: pd.DataFrame, columns: list):
     return df.drop(columns=columns)
 
+def change_missing(df: pd.DataFrame, columns: list):
+    for column in columns:
+        df[column] = df[column].fillna("missing")
+    return df
+
 
 def load_data(file_path: Path) -> pd.DataFrame:
     return pd.read_feather(file_path / "data/parquet_files/train/processed_train.feather")

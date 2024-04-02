@@ -4,8 +4,8 @@ from optuna import Trial
 
 
 class FeatureSelector(BaseEstimator, TransformerMixin):
-    def __init__(self, features: list[str] = []) -> None:
-        self.features = set(features)
+    def __init__(self, features=None) -> None:
+        self.features = features if features is not None else []
 
     def transform(self, X):
         logger.info('Selecting features from Dataset')
@@ -17,6 +17,3 @@ class FeatureSelector(BaseEstimator, TransformerMixin):
     def fit(self, X, *fit_args, **fit_kwargs):
         return self
     
-    @classmethod
-    def instantiate_trial(cls, cfg, trial: Trial):
-        return cls(features=cfg.features.default)

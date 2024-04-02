@@ -5,6 +5,7 @@ import mlflow
 import optuna
 
 from pathlib import Path
+import numpy as np
 from functools import partial
 
 from hydra.utils import instantiate
@@ -12,6 +13,7 @@ from optuna import samplers, create_study
 from sklearn.metrics import roc_auc_score
 import matplotlib.pyplot as plt
 from pathlib import Path
+from evaluate.metric_eval import ModelEvaluator
 
 from data_pipeline.pipelinesteps import load_data, data_splitter
 from model.modelorchastrator import ModelOrchestrator
@@ -28,7 +30,6 @@ def mlflow_decorator(func):
                 with mlflow.start_run(experiment_id="107882983913598320", nested=True):
                     result = func(trial)
                     mlflow.log_params(trial.params)
-                    mlflow.log_metric('AUC', result)
                 return result
             return wrapper
 
@@ -48,11 +49,18 @@ def start_tunning(cfg):
         @mlflow_decorator
         def objective(trial):
             model_orchestrator = ModelOrchestrator(cfg, trial)
-            pipe = model_orchestrator.create_tuning_pipeline()
-            pipe.fit(dataset.X_train, dataset.y_train)
-            y_pred = pipe.predict_proba(dataset.X_test)[:,1]
-            auc = roc_auc_score(dataset.y_test, y_pred)
-            return auc
+            model = model_orchestrator.create_tuning_pipeline()
+            # model.fit(dataset.X_train, dataset.y_train)
+            metrics = ["roc_auc", "gini", "kaggle"]
+            cv_eval = ModelEvaluator(model, metrics)
+            cv_eval_results = cv_eval.evaluate(
+                dataset.X_train, dataset.y_train
+            )
+            for metric, values in cv_eval_results.items():
+                 if (m := metric.removeprefix("test_")) in metrics:
+                    mlflow.log_metric(f"cv_{m}", np.mean(values))
+
+            return cv_eval_results['roc_auc'].mean()
 
 
 
@@ -63,7 +71,7 @@ def start_tunning(cfg):
         fig.write_image(Path(os.getcwd()) / "artifact_storage" / "tune" / "tunehistory.png")
 
         mlflow.log_artifact(Path(os.getcwd())/ "artifact_storage/tune")
-        mlflow.log_metric('AUC', study.best_value)
+        mlflow.log_metric('roc_auc', study.best_value)
         mlflow.log_params(study.best_params)
 
 if __name__ == "__main__":
