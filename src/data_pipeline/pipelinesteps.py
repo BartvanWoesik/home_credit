@@ -3,14 +3,16 @@ from typing import Dict, Tuple
 import pandas as pd
 from pathlib import Path
 
+
 def read_data(file_path: str):
     df = pd.read_feather(file_path)
-    df = df.set_index('case_id')
+    df = df.set_index("case_id")
     return df
 
 
 def drop_redundant_columns(df: pd.DataFrame, columns: list):
     return df.drop(columns=columns)
+
 
 def change_missing(df: pd.DataFrame, columns: list):
     for column in columns:
@@ -19,7 +21,10 @@ def change_missing(df: pd.DataFrame, columns: list):
 
 
 def load_data(file_path: Path) -> pd.DataFrame:
-    return pd.read_feather(file_path / "data/parquet_files/train/processed_train.feather")
+    return pd.read_feather(
+        file_path / "data/parquet_files/train/processed_train.feather"
+    )
+
 
 def data_splitter(
     X: pd.DataFrame,
