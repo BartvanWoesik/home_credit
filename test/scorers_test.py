@@ -40,7 +40,7 @@ def test_kaggle_score():
     # Test case 4: All negative prediction
     y_true = np.array([1, 0, 1, 0])
     y_pred = np.array([0, 0, 0, 0])
-    assert kaggle_score(y_true, y_pred) ==  -0.25
+    assert kaggle_score(y_true, y_pred) == -0.25
 
 
 def test_scorer_empty_prediction():

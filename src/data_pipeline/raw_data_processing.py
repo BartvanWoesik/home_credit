@@ -50,12 +50,17 @@ def create_aggration_dataframe(cfg: dict, df: pl.DataFrame) -> pl.DataFrame:
     # Remove rows where event is after the decision
     if len(cfg.time_col) > 0:
         df = df.filter(pl.col(cfg.time_col[0]) < pl.col(DATE_DECISION))
-    
-    # Check if each column in cfg.agg_columns contains only null values
-    cols_all_null = [col.base_feature_name for col in cfg.agg_columns if len(df[col.name].drop_nulls()) == 0]
-    
 
-    agg_columns = [col for col in cfg.agg_columns if col.base_feature_name not in cols_all_null]
+    # Check if each column in cfg.agg_columns contains only null values
+    cols_all_null = [
+        col.base_feature_name
+        for col in cfg.agg_columns
+        if len(df[col.name].drop_nulls()) == 0
+    ]
+
+    agg_columns = [
+        col for col in cfg.agg_columns if col.base_feature_name not in cols_all_null
+    ]
 
     # Create aggregation specifications
     aggregation_specs = create_agg_specs(agg_columns)
@@ -65,7 +70,7 @@ def create_aggration_dataframe(cfg: dict, df: pl.DataFrame) -> pl.DataFrame:
     df_agg = df.group_by(ID).agg(**aggregation_specs)
     del df
     for col in cols_all_null:
-        df_agg = df_agg.with_columns(placeholder = None)
+        df_agg = df_agg.with_columns(placeholder=None)
         df_agg = df_agg.rename({"placeholder": col})
     return df_agg
 
@@ -103,7 +108,7 @@ def read_file(cfg_columns: List, unique_cols: List, file: str) -> pl.DataFrame:
         pl.DataFrame: DataFrame containing the data from the parquet file.
     """
     if len(cfg_columns.time_col) > 0:
-        return pl.read_parquet      (
+        return pl.read_parquet(
             DATA_PATH / file,
             columns=[ID] + unique_cols + [cfg_columns.time_col[0]],
         )
@@ -159,7 +164,9 @@ def create_dataframe(cfg: DictConfig, split: str) -> pl.DataFrame:
     df.write_ipc(DATA_PATH / DATA_LOCATION)
 
 
-@hydra.main(version_base=None, config_path="../../conf", config_name="raw_data_conf.yaml")
+@hydra.main(
+    version_base=None, config_path="../../conf", config_name="raw_data_conf.yaml"
+)
 def main(cfg):
     """
     This function is the entry point of the raw data processing pipeline.
