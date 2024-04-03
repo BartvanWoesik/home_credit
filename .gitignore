@@ -10,4 +10,4 @@ src/model/__pycache__/*
 **/.vscode
 data/*
 **/__pycache__/
-**.egg_info
+**.egg-info
