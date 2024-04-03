@@ -4,7 +4,6 @@ defaults:
   - _self_
 
 
-
 data_pipeline:
  _target_: data_pipeline.datapipeline.PandasDataPipeline
  steps:
@@ -14,8 +13,8 @@ data_pipeline:
 
 model:
   model_steps: 
-    - FeatureSelector:
-        _target_: model.feature_selector.FeatureSelector
+    - FeatureFilter:
+        _target_: model.feature_selector.FeatureFilter
         features: ${features.all_features}
     - OptBinningTransformer:
         _target_: model.modelorchastrator.OptBinningTransformer
@@ -23,6 +22,11 @@ model:
         max_n_prebins: 674
         min_prebin_size: 0.04386525609119459
         random_state: 42
+    - SelectFromModel:
+        _target_: model.feature_selector.FeatureSelector
+        estimator: 
+          _target_: model.booster.HistBooster
+        threshold: 0.01
 
     - HistGradientBoostingClassifier:
         _target_: sklearn.ensemble.HistGradientBoostingClassifier
@@ -39,7 +43,7 @@ model:
         random_state: 42
       
 hyperparameters:
-  FeatureSelector:
+  FeatureFilter:
     features:
       default: ${features.all_features}
   OptBinningTransformer:

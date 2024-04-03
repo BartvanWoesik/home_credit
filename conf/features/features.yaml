@@ -1,6 +1,6 @@
 all_features:
   - childnum_185L_mean
-  - housetype_905L_last
+  # - housetype_905L_last
   - familystate_447L_last
   - education_927M_last
   - cardtype_51L_last
@@ -29,7 +29,7 @@ all_features:
   - downpmt_116A_last
 
 cat_features:
-  - housetype_905L_last
+  # - housetype_905L_last
   - education_927M_last
   - credacc_cards_status_52L_mode
   - familystate_447L_last
