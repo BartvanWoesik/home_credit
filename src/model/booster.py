@@ -9,7 +9,14 @@ class HistBooster(HistGradientBoostingClassifier):
 
     def _calculate_feature_importances(self, X, y):
         results = permutation_importance(
-            self, X, y, n_repeats=1, random_state=42, scoring="roc_auc", max_samples=0.5
+            self,
+            X,
+            y,
+            n_repeats=1,
+            random_state=42,
+            scoring="roc_auc",
+            max_samples=0.5,
+            n_jobs=-1,
         )
 
         return results.importances_mean

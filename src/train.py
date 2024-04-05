@@ -44,7 +44,7 @@ def main(cfg):
         )
 
         model_orchestrator = ModelOrchestrator(cfg)
-        model = model_orchestrator.create_pipe_line()
+        model = model_orchestrator.create_pipeline()
 
         mlflow.sklearn.log_model(model, "model")
         mlflow.sklearn.save_model(model, "model")

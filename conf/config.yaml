@@ -17,7 +17,7 @@ model:
         _target_: model.feature_selector.FeatureFilter
         features: ${features.all_features}
     - OptBinningTransformer:
-        _target_: model.modelorchastrator.OptBinningTransformer
+        _target_: model.binning.OptBinningTransformer
         variable_names: ${features.cat_features}
         max_n_prebins: 674
         min_prebin_size: 0.04386525609119459
@@ -26,7 +26,15 @@ model:
         _target_: model.feature_selector.FeatureSelector
         estimator: 
           _target_: model.booster.HistBooster
-        threshold: 0.01
+          class_weight: balanced
+          max_iter: 3997
+          l2_regularization: 2.525756277489002
+          early_stopping: True
+          max_leaf_nodes: 106
+          max_bins: 196
+          max_depth: 605
+          random_state: 42
+        threshold: 0.001
 
     - HistGradientBoostingClassifier:
         _target_: sklearn.ensemble.HistGradientBoostingClassifier
@@ -46,6 +54,7 @@ hyperparameters:
   FeatureFilter:
     features:
       default: ${features.all_features}
+    
   OptBinningTransformer:
     max_n_prebins:
       type: int
@@ -61,6 +70,12 @@ hyperparameters:
       default: ${features.cat_features}
     random_state:
       default: 42
+  SelectFromModel:
+    threshold:
+      default: 0.005
+    estimator:
+      default: 
+        _target_: model.booster.HistBooster
   HistGradientBoostingClassifier:
     learning_rate:
       type: float
