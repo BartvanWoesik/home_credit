@@ -14,7 +14,7 @@ def max(col):
 
 
 def mode(col):
-    return (pl.col(col)).mode().last()
+    return (pl.col(col).fill_null("missing")).mode().last()
 
 
 def min(col):

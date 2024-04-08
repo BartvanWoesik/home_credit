@@ -129,6 +129,16 @@ data:
         aggregation: 
           _target_: data_pipeline.pipes.mean
           _partial_: true
+      - name: pmts_year_507T
+        base_feature_name: pmts_year_507T_last
+        aggregation: 
+          _target_: data_pipeline.pipes.last
+          _partial_: true
+      - name: pmts_year_1139T
+        base_feature_name: pmts_year_1139T_last
+        aggregation: 
+          _target_: data_pipeline.pipes.last
+          _partial_: true
 
   applprev_2:
     time_col: []
@@ -150,6 +160,37 @@ data:
     agg_columns:
       - name: mainoccupationinc_437A
         base_feature_name: mainoccupationinc_437A_last
+        aggregation: 
+          _target_: data_pipeline.pipes.last
+          _partial_: true
+      - name: inittransactioncode_279L
+        base_feature_name: inittransactioncode_279L_last
+        aggregation: 
+          _target_: data_pipeline.pipes.last
+          _partial_: true
+      - name: mainoccupationinc_437A
+        base_feature_name: mainoccupationinc_437A_last
+        aggregation: 
+          _target_: data_pipeline.pipes.last
+          _partial_: true
+      - name: isdebitcard_527L
+        base_feature_name: isdebitcard_527L_last
+        aggregation: 
+          _target_: data_pipeline.pipes.last
+          _partial_: true
+      - name: pmtnum_8L
+        base_feature_name: pmtnum_8L_last
+        aggregation: 
+          _target_: data_pipeline.pipes.last
+          _partial_: true
+      - name: postype_4733339M
+        base_feature_name: postype_4733339M_last
+        aggregation: 
+          _target_: data_pipeline.pipes.last
+          _partial_: true
+
+      - name: tenor_203L
+        base_feature_name: tenor_203L_last
         aggregation: 
           _target_: data_pipeline.pipes.last
           _partial_: true

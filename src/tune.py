@@ -13,7 +13,7 @@ from optuna import create_study
 from evaluate.metric_eval import ModelEvaluator
 
 from data_pipeline.pipelinesteps import load_data, data_splitter
-from model.modelorchastrator import ModelOrchestrator
+from model.modelorchastrator import TuningOrchestrator
 from data_pipeline.dataset import Dataset
 
 mlflow.set_tracking_uri("http://localhost:5000")
@@ -45,8 +45,8 @@ def start_tunning(cfg):
 
         @mlflow_decorator
         def objective(trial):
-            model_orchestrator = ModelOrchestrator(cfg, trial)
-            model = model_orchestrator.create_tuning_pipeline()
+            model_orchestrator = TuningOrchestrator(cfg, trial)
+            model = model_orchestrator.create_pipeline()
             # model.fit(dataset.X_train, dataset.y_train)
             metrics = ["roc_auc", "gini", "kaggle"]
             cv_eval = ModelEvaluator(model, metrics)
@@ -55,7 +55,7 @@ def start_tunning(cfg):
                 if (m := metric.removeprefix("test_")) in metrics:
                     mlflow.log_metric(f"cv_{m}", np.mean(values))
 
-            return cv_eval_results["roc_auc"].mean()
+            return cv_eval_results["test_roc_auc"].mean()
 
         # with mlflow.start_run(experiment_id="264751226398184019", run_name=commit_message, nested=True) as parent_run:
         study = create_study(study_name="optimization", direction="maximize")
