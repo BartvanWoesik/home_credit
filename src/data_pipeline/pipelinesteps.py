@@ -14,6 +14,13 @@ def drop_redundant_columns(df: pd.DataFrame, columns: list):
     return df.drop(columns=columns)
 
 
+def get_age(df: pd.DataFrame, column: str):
+    df[column] = df[column].fillna("1970-01-01")
+    df[column] = pd.to_datetime(df[column])
+    df["Age"] = (pd.to_datetime("today") - df[column]).dt.days
+    return df
+
+
 def change_missing(df: pd.DataFrame, columns: list):
     for column in columns:
         df[column] = df[column].fillna("missing")

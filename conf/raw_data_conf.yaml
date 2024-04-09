@@ -22,6 +22,11 @@ data:
         aggregation: 
           _target_: data_pipeline.pipes.last
           _partial_: true
+      - name: birth_259D
+        base_feature_name: birth_259D_last
+        aggregation: 
+          _target_: data_pipeline.pipes.last
+          _partial_: true
 
   static_0:
     time_col: []

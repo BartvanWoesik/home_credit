@@ -7,6 +7,9 @@ defaults:
 data_pipeline:
  _target_: data_pipeline.datapipeline.PandasDataPipeline
  steps:
+  - _target_: data_pipeline.pipelinesteps.get_age
+    _partial_: true
+    column: birth_259D_last
   - _target_: data_pipeline.pipelinesteps.change_missing
     _partial_: true
     columns: ['housetype_905L_last', 'education_927M_last', 'credacc_cards_status_52L_mode', 'familystate_447L_last', 'credacc_cards_status_52L_last', 'classificationofcontr_400M_mode', 'credtype_322L_last', 'cardtype_51L_last', 'cardtype_51L_mode']
@@ -52,64 +55,102 @@ model:
       
 hyperparameters:
   FeatureFilter:
-    features:
-      default: ${features.all_features}
+    - _target_: model.modelorchastrator.TuningParameter
+      parameter_name: features
+      trial_type: default
+      default_value: ${features.all_features}
     
   OptBinningTransformer:
-    max_n_prebins:
-      type: int
-      max: 1000
-      min: 2
-      default: 100
-    min_prebin_size:
-      type: float
-      max: 0.5
-      min: 0.02
-      default: 0.05
-    variable_names:
-      default: ${features.cat_features}
-    random_state:
-      default: 42
+    - _target_: model.modelorchastrator.TuningParameter
+      parameter_name: max_n_prebins
+      trial_type: int
+      search_space: 
+        - 2
+        - 1000
+      default_value: 100
+    - _target_: model.modelorchastrator.TuningParameter
+      parameter_name: min_prebin_size
+      trial_type: float
+      search_space: 
+        - 0.02
+        - 0.5
+      default_value: 0.05
+    - _target_: model.modelorchastrator.TuningParameter
+      parameter_name: variable_names
+      trial_type: default
+      default_value: ${features.cat_features}
+    - _target_: model.modelorchastrator.TuningParameter
+      parameter_name: random_state
+      trial_type: default
+      default_value: 42
+
   SelectFromModel:
-    threshold:
-      default: 0.005
-    estimator:
-      default: 
+    - _target_: model.modelorchastrator.TuningParameter
+      parameter_name: threshold
+      trial_type: float
+      search_space: 
+        - 0.001
+        - 0.01
+      default_value: 0.005
+    - _target_: model.modelorchastrator.TuningParameter
+      parameter_name: estimator
+      trial_type: default
+      default_value: 
         _target_: model.booster.HistBooster
+
+
   HistGradientBoostingClassifier:
-    learning_rate:
-      type: float
-      max: 1
-      min: 0.01
-      default: 0.1
-    max_iter:
-      type: int
-      max: 10000
-      min: 100
-      default: 1000
-    l2_regularization:
-      type: float
-      max: 10
-      min: 0.001
-      default: 0.3
-    early_stopping:
-      default: True
-    max_leaf_nodes:
-      type: int
-      max: 1000
-      min: 10
-      default: 100
-    max_depth:
-      type: int
-      max: 1000
-      min: 1
-      default: 100
-    max_bins:
-      type: int
-      max: 255
-      min: 2
-      default: 255
-    class_weight:
-      default: balanced
-    random_state:
-      default: 42
+    - _target_: model.modelorchastrator.TuningParameter
+      parameter_name: learning_rate
+      trial_type: float
+      search_space: 
+        - 0.01
+        - 1
+      default_value: 0.1
+    - _target_: model.modelorchastrator.TuningParameter
+      parameter_name: max_iter
+      trial_type: int
+      search_space: 
+        - 100
+        - 10000
+      default_value: 1000
+    - _target_: model.modelorchastrator.TuningParameter
+      parameter_name: l2_regularization
+      trial_type: float
+      search_space: 
+        - 0.001
+        - 10
+      default_value: 0.3
+    - _target_: model.modelorchastrator.TuningParameter
+      parameter_name: early_stopping
+      trial_type: default
+      default_value: True
+    - _target_: model.modelorchastrator.TuningParameter
+      parameter_name: max_leaf_nodes
+      trial_type: int
+      search_space: 
+        - 10
+        - 1000
+      default_value: 100
+    - _target_: model.modelorchastrator.TuningParameter
+      parameter_name: max_depth
+      trial_type: int
+      search_space: 
+        - 1
+        - 1000
+      default_value: 100
+    - _target_: model.modelorchastrator.TuningParameter
+      parameter_name: max_bins
+      trial_type: int
+      search_space: 
+        - 2
+        - 255
+      default_value: 255
+    - _target_: model.modelorchastrator.TuningParameter
+      parameter_name: class_weight
+      trial_type: default
+      default_value: balanced
+    - _target_: model.modelorchastrator.TuningParameter
+      parameter_name: random_state
+      trial_type: default
+      default_value: 42
