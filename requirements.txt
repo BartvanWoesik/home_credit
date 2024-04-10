@@ -10,3 +10,4 @@ shap
 ipywidgets
 shap
 git+https://github.com/BartvanWoesik/MyLogger.git
+git+https://github.com/BartvanWoesik/model-forge.git
