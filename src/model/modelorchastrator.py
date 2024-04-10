@@ -14,6 +14,18 @@ from sklearn.pipeline import Pipeline
 
 
 class Orchestartor(ABC):
+    """
+    Abstract base class for orchestrating the model pipeline.
+
+    Attributes:
+        cfg (dict): Configuration parameters for the orchestrator.
+
+    Methods:
+        create_pipeline(): Abstract method for creating the model pipeline.
+        features_in(cfg): Abstract method for processing the input features.
+
+    """
+
     def __init__(self, cfg) -> None:
         self.cfg = cfg
 
@@ -27,23 +39,112 @@ class Orchestartor(ABC):
 
 
 class ModelOrchestrator(Orchestartor):
+    """
+    Class representing the model orchestrator.
+
+    This class is responsible for creating a model pipeline and managing the features.
+
+    Attributes:
+        cfg (Config): The configuration object.
+
+    Methods:
+        create_pipeline: Creates a model pipeline based on the configuration.
+        features_in: Returns the features specified in the configuration.
+
+    """
+
     def create_pipeline(self):
+        """
+        Creates a model pipeline based on the configuration.
+
+        Returns:
+            ModelPipeline: The created model pipeline.
+
+        """
         return ModelPipeline.create_from_config(self.cfg)
 
     def features_in(self, cfg):
+        """
+        Returns the features specified in the configuration.
+
+        Args:
+            cfg (Config): The configuration object.
+
+        Returns:
+            list: The list of features.
+
+        """
         return cfg.features
 
 
 class TuningOrchestrator(Orchestartor):
+    """
+    Class representing the orchestrator for model tuning.
+    """
+
     def __init__(self, cfg, trial) -> None:
         super().__init__(cfg)
         self.trial = trial
 
     def create_pipeline(self):
+        """
+        Creates a tuning pipeline based on the configuration and trial.
+        """
         return TuningPipeline.create_from_config(self.cfg, self.trial)
 
     def features_in(self, cfg):
+        """
+        Returns the features specified in the given configuration.
+        """
         return cfg.features
+
+
+class TuningParameter:
+    def __init__(
+        self,
+        parameter_name: str,
+        trial_type: str,
+        search_space: list = None,
+        default_value: list | float = None,
+    ) -> None:
+        self.parameter_name = parameter_name
+        self.search_space = search_space
+        self.default_value = default_value
+        self.trial_type = trial_type
+        self._check_input()
+
+    def _check_input(self):
+        if self.trial_type in ("float", "int") and len(self.search_space) != 2:
+            raise ValueError("search_space must have 2 values for float and int types")
+        if self.trial_type == "categorical" and len(self.search_space) == 0:
+            raise ValueError(
+                "search_space must have at least 1 value for categorical type"
+            )
+        if self.trial_type not in ("float", "int", "categorical", "default"):
+            raise ValueError("Invalid trial_type. Choose float, int or categorical.")
+        if (
+            self.trial_type in ("float", "int")
+            and self.search_space[0] > self.search_space[1]
+        ):
+            raise ValueError(
+                "Invalid search_space. First value must be less than the second value for float and int types"
+            )
+
+    def create_range(self, trial):
+        suggest_methods = {
+            "float": trial.suggest_float,
+            "int": trial.suggest_int,
+            "categorical": trial.suggest_categorical,
+        }
+
+        suggest_method = suggest_methods.get(self.trial_type)
+        if self.trial_type == "categorical":
+            return suggest_method(self.parameter_name, self.search_space)
+        elif self.trial_type == "default":
+            return self.default_value
+        return suggest_method(
+            self.parameter_name, self.search_space[0], self.search_space[1]
+        )
 
 
 class CustomPipeline(ABC, Pipeline):
@@ -105,29 +206,37 @@ class TuningPipeline(CustomPipeline):
         """
         params = {}
         for step in cfg.hyperparameters:
-            params_step = {}
-            for parameter in cfg.hyperparameters[step]:
-                short_cfg = cfg.hyperparameters[step]
-                if "type" in short_cfg[parameter]:
-                    if short_cfg[parameter].type == "float":
-                        params_step[parameter] = trial.suggest_float(
-                            parameter,
-                            short_cfg[parameter].min,
-                            short_cfg[parameter].max,
-                        )
-                    elif short_cfg[parameter].type == "int":
-                        params_step[parameter] = trial.suggest_int(
-                            parameter,
-                            short_cfg[parameter].min,
-                            short_cfg[parameter].max,
-                        )
-                    else:
-                        params_step[parameter] = short_cfg[parameter].default
-                else:
-                    # Handle the case when 'type' key is missing in cfg[parameter]
-                    params_step[parameter] = short_cfg[parameter].default
-            params[step] = params_step
+            params_steps = {}
+            for parameters in cfg.hyperparameters[step]:
+                parameter_trial = instantiate(parameters)
+                params_steps[
+                    parameter_trial.parameter_name
+                ] = parameter_trial.create_range(trial)
+            params[step] = params_steps
         return params
+
+        # params_step = {}
+        # short_cfg = cfg.hyperparameters[step]
+        # for parameter in cfg.hyperparameters[step]:
+        #     if "type" in short_cfg[parameter]:
+        #         if short_cfg[parameter].type == "float":
+        #             params_step[parameter] = trial.suggest_float(
+        #                 parameter,
+        #                 short_cfg[parameter].min,
+        #                 short_cfg[parameter].max,
+        #             )
+        #         elif short_cfg[parameter].type == "int":
+        #             params_step[parameter] = trial.suggest_int(
+        #                 parameter,
+        #                 short_cfg[parameter].min,
+        #                 short_cfg[parameter].max,
+        #             )
+        #         else:
+        #             params_step[parameter] = short_cfg[parameter].default
+        #     else:
+        #         # Handle the case when 'type' key is missing in cfg[parameter]
+        #         params_step[parameter] = short_cfg[parameter].default
+        # params[step] = params_step
 
 
 class ModelPipeline(CustomPipeline):
