@@ -5,7 +5,7 @@ defaults:
 
 
 data_pipeline:
- _target_: data_pipeline.datapipeline.PandasDataPipeline
+ _target_: model_forge.data.datapipeline.PandasDataPipeline
  steps:
   - _target_: data_pipeline.pipelinesteps.get_age
     _partial_: true
@@ -55,44 +55,44 @@ model:
       
 hyperparameters:
   FeatureFilter:
-    - _target_: model.modelorchastrator.TuningParameter
+    - _target_: model_forge.model.modelorchastrator.TuningParameter
       parameter_name: features
       trial_type: default
       default_value: ${features.all_features}
     
   OptBinningTransformer:
-    - _target_: model.modelorchastrator.TuningParameter
+    - _target_: model_forge.model.modelorchastrator.TuningParameter
       parameter_name: max_n_prebins
       trial_type: int
       search_space: 
         - 2
         - 1000
       default_value: 100
-    - _target_: model.modelorchastrator.TuningParameter
+    - _target_: model_forge.model.modelorchastrator.TuningParameter
       parameter_name: min_prebin_size
       trial_type: float
       search_space: 
         - 0.02
         - 0.5
       default_value: 0.05
-    - _target_: model.modelorchastrator.TuningParameter
+    - _target_: model_forge.model.modelorchastrator.TuningParameter
       parameter_name: variable_names
       trial_type: default
       default_value: ${features.cat_features}
-    - _target_: model.modelorchastrator.TuningParameter
+    - _target_: model_forge.model.modelorchastrator.TuningParameter
       parameter_name: random_state
       trial_type: default
       default_value: 42
 
   SelectFromModel:
-    - _target_: model.modelorchastrator.TuningParameter
+    - _target_: model_forge.model.modelorchastrator.TuningParameter
       parameter_name: threshold
       trial_type: float
       search_space: 
         - 0.001
         - 0.01
       default_value: 0.005
-    - _target_: model.modelorchastrator.TuningParameter
+    - _target_: model_forge.model.modelorchastrator.TuningParameter
       parameter_name: estimator
       trial_type: default
       default_value: 
@@ -100,57 +100,57 @@ hyperparameters:
 
 
   HistGradientBoostingClassifier:
-    - _target_: model.modelorchastrator.TuningParameter
+    - _target_: model_forge.model.modelorchastrator.TuningParameter
       parameter_name: learning_rate
       trial_type: float
       search_space: 
         - 0.01
         - 1
       default_value: 0.1
-    - _target_: model.modelorchastrator.TuningParameter
+    - _target_: model_forge.model.modelorchastrator.TuningParameter
       parameter_name: max_iter
       trial_type: int
       search_space: 
         - 100
         - 10000
       default_value: 1000
-    - _target_: model.modelorchastrator.TuningParameter
+    - _target_: model_forge.model.modelorchastrator.TuningParameter
       parameter_name: l2_regularization
       trial_type: float
       search_space: 
         - 0.001
         - 10
       default_value: 0.3
-    - _target_: model.modelorchastrator.TuningParameter
+    - _target_: model_forge.model.modelorchastrator.TuningParameter
       parameter_name: early_stopping
       trial_type: default
       default_value: True
-    - _target_: model.modelorchastrator.TuningParameter
+    - _target_: model_forge.model.modelorchastrator.TuningParameter
       parameter_name: max_leaf_nodes
       trial_type: int
       search_space: 
         - 10
         - 1000
       default_value: 100
-    - _target_: model.modelorchastrator.TuningParameter
+    - _target_: model_forge.model.modelorchastrator.TuningParameter
       parameter_name: max_depth
       trial_type: int
       search_space: 
         - 1
         - 1000
       default_value: 100
-    - _target_: model.modelorchastrator.TuningParameter
+    - _target_: model_forge.model.modelorchastrator.TuningParameter
       parameter_name: max_bins
       trial_type: int
       search_space: 
         - 2
         - 255
       default_value: 255
-    - _target_: model.modelorchastrator.TuningParameter
+    - _target_: model_forge.model.modelorchastrator.TuningParameter
       parameter_name: class_weight
       trial_type: default
       default_value: balanced
-    - _target_: model.modelorchastrator.TuningParameter
+    - _target_: model_forge.model.modelorchastrator.TuningParameter
       parameter_name: random_state
       trial_type: default
       default_value: 42

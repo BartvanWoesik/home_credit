@@ -10,11 +10,12 @@ from functools import partial
 
 from hydra.utils import instantiate
 from optuna import create_study
-from evaluate.metric_eval import ModelEvaluator
+from model_forge.model.metricevaluator import ModelEvaluator
 
 from data_pipeline.pipelinesteps import load_data, data_splitter
-from model.modelorchastrator import TuningOrchestrator
-from data_pipeline.dataset import Dataset
+from model_forge.model.modelorchastrator import TuningOrchestrator
+from model_forge.data.dataset import Dataset
+from evaluate.scorers import custom_scorers
 
 mlflow.set_tracking_uri("http://localhost:5000")
 base_path = Path(os.getcwd())
@@ -48,9 +49,11 @@ def start_tunning(cfg):
             model_orchestrator = TuningOrchestrator(cfg, trial)
             model = model_orchestrator.create_pipeline()
             # model.fit(dataset.X_train, dataset.y_train)
-            metrics = ["roc_auc", "gini", "kaggle"]
-            cv_eval = ModelEvaluator(model, metrics)
-            cv_eval_results = cv_eval.evaluate(dataset.X_train, dataset.y_train)
+            metrics = ["roc_auc"]
+            cv_eval = ModelEvaluator(
+                sklearn_metrics=metrics, custom_scorers=custom_scorers, cv=5
+            )
+            cv_eval_results = cv_eval.evaluate(model, dataset.X_train, dataset.y_train)
             for metric, values in cv_eval_results.items():
                 if (m := metric.removeprefix("test_")) in metrics:
                     mlflow.log_metric(f"cv_{m}", np.mean(values))
