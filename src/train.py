@@ -2,14 +2,14 @@ import os
 import mlflow
 import mlflow.sklearn
 import numpy as np
-from data_pipeline.dataset import Dataset
+from src_out.data.dataset import Dataset
 from data_pipeline.pipelinesteps import data_splitter
 from hydra.utils import instantiate
 import hydra
 import subprocess
 from pathlib import Path
-from model.modelorchastrator import ModelOrchestrator
-from evaluate.metric_eval import ModelEvaluator
+from model_forge.model.modelorchastrator import ModelOrchestrator
+from model_forge.model.metricevaluator import ModelEvaluator
 
 from evaluate.shap_eval import ShapEval
 from my_logger.custom_logger import logger
@@ -19,6 +19,7 @@ from evaluate.plots.density import plot_density
 from sklearn.metrics import PrecisionRecallDisplay
 import matplotlib.pyplot as plt
 from functools import partial
+from evaluate.scorers import custom_scorers
 
 mlflow.set_tracking_uri("http://127.0.0.1:5000/")
 
@@ -51,9 +52,11 @@ def main(cfg):
 
         # Use cross evaluation to evaluate the model on training data
         logger.info("Creating a cross-validation evaluator for the model.")
-        metrics = ["roc_auc", "gini", "kaggle"]
-        cv_eval = ModelEvaluator(model, metrics)
-        cv_eval_results = cv_eval.evaluate(dataset.X_train, dataset.y_train)
+        metrics = ["roc_auc"]
+        cv_eval = ModelEvaluator(
+            sklearn_metrics=metrics, custom_scorers=custom_scorers, cv=5
+        )
+        cv_eval_results = cv_eval.evaluate(model, dataset.X_train, dataset.y_train)
         for metric, values in cv_eval_results.items():
             if (m := metric.removeprefix("test_")) in metrics:
                 mlflow.log_metric(f"cv_{m}", np.mean(values))
