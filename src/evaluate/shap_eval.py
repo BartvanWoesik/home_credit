@@ -1,9 +1,11 @@
 import os
+
 from random import randint
 
-import matplotlib.pyplot as plt
-from sklearn.pipeline import Pipeline
 import shap
+import matplotlib.pyplot as plt
+
+from sklearn.pipeline import Pipeline
 
 from my_logger.custom_logger import logger
 

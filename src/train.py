@@ -1,25 +1,29 @@
 import os
+import subprocess
+
+from pathlib import Path
+from functools import partial
+
+import hydra
 import mlflow
 import mlflow.sklearn
 import numpy as np
-from src_out.data.dataset import Dataset
-from data_pipeline.pipelinesteps import data_splitter
-from hydra.utils import instantiate
-import hydra
-import subprocess
-from pathlib import Path
-from model_forge.model.modelorchastrator import ModelOrchestrator
-from model_forge.model.metricevaluator import ModelEvaluator
+import matplotlib.pyplot as plt
 
-from evaluate.shap_eval import ShapEval
+from hydra.utils import instantiate
+from sklearn.metrics import PrecisionRecallDisplay, get_scorer
+
 from my_logger.custom_logger import logger
 
-from data_pipeline.pipelinesteps import load_data
+from model_forge.data.dataset import Dataset
+from model_forge.model.model_evaluator import ModelEvaluator
+from model_forge.model.model_orchastrator import ModelOrchestrator
+
+from evaluate.shap_eval import ShapEval
 from evaluate.plots.density import plot_density
-from sklearn.metrics import PrecisionRecallDisplay
-import matplotlib.pyplot as plt
-from functools import partial
-from evaluate.scorers import custom_scorers
+from data_pipeline.pipelinesteps import data_splitter, load_data
+
+from constants import METRICS
 
 mlflow.set_tracking_uri("http://127.0.0.1:5000/")
 
@@ -41,7 +45,7 @@ def main(cfg):
             partial(load_data, base_path),
             instantiate(cfg.data_pipeline),
             data_splitter=data_splitter,
-            target_column="target",
+            target_column="target"
         )
 
         model_orchestrator = ModelOrchestrator(cfg)
@@ -52,13 +56,11 @@ def main(cfg):
 
         # Use cross evaluation to evaluate the model on training data
         logger.info("Creating a cross-validation evaluator for the model.")
-        metrics = ["roc_auc"]
-        cv_eval = ModelEvaluator(
-            sklearn_metrics=metrics, custom_scorers=custom_scorers, cv=5
-        )
+
+        cv_eval = ModelEvaluator(metrics=METRICS, cv=5)
         cv_eval_results = cv_eval.evaluate(model, dataset.X_train, dataset.y_train)
         for metric, values in cv_eval_results.items():
-            if (m := metric.removeprefix("test_")) in metrics:
+            if (m := metric.removeprefix("test_")) in METRICS:
                 mlflow.log_metric(f"cv_{m}", np.mean(values))
 
         logger.info("Creating a shap plots for the model.")
