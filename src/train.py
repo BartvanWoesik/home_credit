@@ -2,14 +2,14 @@ import os
 import mlflow
 import mlflow.sklearn
 import numpy as np
-from src_out.data.dataset import Dataset
+from model_forge.data.dataset import Dataset
 from data_pipeline.pipelinesteps import data_splitter
 from hydra.utils import instantiate
 import hydra
 import subprocess
 from pathlib import Path
-from model_forge.model.modelorchastrator import ModelOrchestrator
-from model_forge.model.metricevaluator import ModelEvaluator
+from model_forge.model.model_orchastrator import ModelOrchestrator
+from model_forge.model.model_evaluator import ModelEvaluator
 
 from evaluate.shap_eval import ShapEval
 from my_logger.custom_logger import logger
@@ -42,6 +42,7 @@ def main(cfg):
             instantiate(cfg.data_pipeline),
             data_splitter=data_splitter,
             target_column="target",
+            splits_columns=["train", "test", "OOT"],
         )
 
         model_orchestrator = ModelOrchestrator(cfg)
