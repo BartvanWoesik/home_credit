@@ -46,6 +46,7 @@ def start_tunning(cfg):
             instantiate(cfg.data_pipeline),
             data_splitter=data_splitter,
             target_column="target",
+            splits_columns=["train", "test", "OOT"],
         )
 
         @mlflow_decorator

@@ -11,7 +11,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from hydra.utils import instantiate
-from sklearn.metrics import PrecisionRecallDisplay, get_scorer
+from sklearn.metrics import PrecisionRecallDisplay
 
 from my_logger.custom_logger import logger
 
@@ -45,7 +45,8 @@ def main(cfg):
             partial(load_data, base_path),
             instantiate(cfg.data_pipeline),
             data_splitter=data_splitter,
-            target_column="target"
+            target_column="target",
+            splits_columns=["train", "test", "OOT"],
         )
 
         model_orchestrator = ModelOrchestrator(cfg)
@@ -78,7 +79,7 @@ def main(cfg):
 
         dens_path = "Density/"
         pr_path = "Precision-Recall/"
-        for split_name, (X, y) in dataset.splits.items():
+        for split_name, (X, y) in dataset:
             # Create Precision-Recall curve
             display = PrecisionRecallDisplay.from_estimator(
                 model, X, y, plot_chance_level=True
