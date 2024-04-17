@@ -79,7 +79,7 @@ def main(cfg):
 
         dens_path = "Density/"
         pr_path = "Precision-Recall/"
-        for split_name, (X, y) in dataset.splits.items():
+        for split_name, (X, y) in dataset:
             # Create Precision-Recall curve
             display = PrecisionRecallDisplay.from_estimator(
                 model, X, y, plot_chance_level=True
