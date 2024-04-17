@@ -1,21 +1,25 @@
 import os
 import subprocess
+
+from pathlib import Path
+from functools import partial
+
 import hydra
 import mlflow
 import optuna
 
-from pathlib import Path
 import numpy as np
-from functools import partial
 
-from hydra.utils import instantiate
 from optuna import create_study
-from model_forge.model.metricevaluator import ModelEvaluator
+from hydra.utils import instantiate
+
+from model_forge.data.dataset import Dataset
+from model_forge.model.model_evaluator import ModelEvaluator
+from model_forge.model.model_orchastrator import TuningOrchestrator
 
 from data_pipeline.pipelinesteps import load_data, data_splitter
-from model_forge.model.modelorchastrator import TuningOrchestrator
-from model_forge.data.dataset import Dataset
-from evaluate.scorers import custom_scorers
+
+from constants import METRICS
 
 mlflow.set_tracking_uri("http://localhost:5000")
 base_path = Path(os.getcwd())
@@ -48,14 +52,10 @@ def start_tunning(cfg):
         def objective(trial):
             model_orchestrator = TuningOrchestrator(cfg, trial)
             model = model_orchestrator.create_pipeline()
-            # model.fit(dataset.X_train, dataset.y_train)
-            metrics = ["roc_auc"]
-            cv_eval = ModelEvaluator(
-                sklearn_metrics=metrics, custom_scorers=custom_scorers, cv=5
-            )
+            cv_eval = ModelEvaluator(metrics=METRICS, cv=5)
             cv_eval_results = cv_eval.evaluate(model, dataset.X_train, dataset.y_train)
             for metric, values in cv_eval_results.items():
-                if (m := metric.removeprefix("test_")) in metrics:
+                if (m := metric.removeprefix("test_")) in METRICS:
                     mlflow.log_metric(f"cv_{m}", np.mean(values))
 
             return cv_eval_results["test_roc_auc"].mean()

@@ -1,6 +1,7 @@
-import matplotlib.pyplot as plt
-import seaborn as sns
 import os
+
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 
 def plot_density(pred, true_labels, path, file_name, threshold):

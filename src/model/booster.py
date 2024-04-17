@@ -1,5 +1,5 @@
-from sklearn.ensemble import HistGradientBoostingClassifier
 from sklearn.inspection import permutation_importance
+from sklearn.ensemble import HistGradientBoostingClassifier
 
 
 class HistBooster(HistGradientBoostingClassifier):
