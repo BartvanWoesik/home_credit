@@ -1,6 +1,7 @@
-from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.feature_selection import SelectFromModel
 import pandas as pd
+
+from sklearn.feature_selection import SelectFromModel
+from sklearn.base import BaseEstimator, TransformerMixin
 
 
 class FeatureFilter(BaseEstimator, TransformerMixin):

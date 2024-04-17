@@ -1,8 +1,10 @@
-from sklearn.model_selection import ShuffleSplit
-from typing import Dict, Tuple
-import pandas as pd
 from pathlib import Path
+from typing import Dict, Tuple
+
+import pandas as pd
 from datetime import datetime
+
+from sklearn.model_selection import ShuffleSplit
 
 
 def read_data(file_path: str):

@@ -1,7 +1,8 @@
 import numpy as np
-from evaluate.scorers import gini_score, check_scorer_input, kaggle_score
 
 import pytest
+
+from src.evaluate.scorers import gini_score, check_scorer_input, kaggle_score
 
 
 def test_gini_score():
