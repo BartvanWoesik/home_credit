@@ -38,6 +38,8 @@ markers = [
     "plots: Use this mark for all tests that produce plots",
     "asyncio: Use this mark for all tests concerning async callables"
 ]
+
+
 log_cli = "true"
 log_level = "DEBUG"
 log_format = "%(asctime)s %(name)s %(levelname)s %(message)s"
