@@ -5,10 +5,7 @@ on:
         - main
 permissions:
     contents: write
-
 jobs:
-
-
-    poetry-install:
+    update_mkdocs:
         uses: BartvanWoesik/workflow-forge/.github/workflows/mkdocs-deploy.yml@main
     
