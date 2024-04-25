@@ -1,5 +1,6 @@
 name: Test for Poetry
-
+permissions:
+    contents: write
 
 on:
     workflow_dispatch:
