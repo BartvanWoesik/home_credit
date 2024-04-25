@@ -1,0 +1,17 @@
+name: Update Mkdocs
+on:
+    push:
+      branches:
+        - main
+permissions:
+    contents: write
+
+on:
+    workflow_dispatch:
+
+jobs:
+
+
+    poetry-install:
+        uses: BartvanWoesik/workflow-forge/.github/workflows/mkdocs-deploy.yml@main
+    
