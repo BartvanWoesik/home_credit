@@ -1,0 +1,10 @@
+name: Test for Poetry
+
+
+on:
+    workflow_dispatch:
+
+jobs:
+
+    call-workflow-using-branch:
+        uses: BartvanWoesik/workflow-forge/workflows/poetry/setup-poetry.yml@main
