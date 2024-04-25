@@ -6,9 +6,4 @@ on:
 jobs:
   call-workflow-using-branch:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      
-      - name: Call setup-poetry workflow
-        uses: BartvanWoesik/workflow-forge/.github/workflows/poetry/setup-poetry.yml@main
+    uses: BartvanWoesik/workflow-forge/.github/workflows/poetry/setup-poetry.yml@main
