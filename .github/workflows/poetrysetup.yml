@@ -1,15 +1,16 @@
 name: Test for Poetry
 
+
 on:
-  workflow_dispatch:
+    workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
 
-      - name: Setup Poetry
+    checkout:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+    poetry-install:
         uses: BartvanWoesik/workflow-forge/.github/workflows/setup-poetry.yml@main
+    
