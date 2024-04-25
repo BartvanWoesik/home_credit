@@ -11,6 +11,4 @@ jobs:
         uses: actions/checkout@v2
       
       - name: Call setup-poetry workflow
-        uses: BartvanWoesik/workflow-forge@main
-        with:
-          workflow-file: '.github/workflows/poetry/setup-poetry.yml'
+        uses: BartvanWoesik/workflow-forge/.github/workflows/poetry/setup-poetry.yml@main
