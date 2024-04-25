@@ -6,4 +6,4 @@ on:
 jobs:
   call-workflow-using-branch:
     runs-on: ubuntu-latest
-    uses: BartvanWoesik/workflow-forge/.github/workflows/poetry/setup-poetry.yml@main
+    uses: BartvanWoesik/workflow-forge/.github/workflows/setup-poetry.yml@main
