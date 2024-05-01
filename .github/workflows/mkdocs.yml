@@ -1,0 +1,11 @@
+name: Update Mkdocs
+on:
+    push:
+      branches:
+        - main
+permissions:
+    contents: write
+jobs:
+    update_mkdocs:
+        uses: BartvanWoesik/workflow-forge/.github/workflows/mkdocs-deploy.yml@main
+    

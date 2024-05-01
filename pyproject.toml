@@ -29,6 +29,9 @@ mlflow = "*"
 optuna = "*"
 mylogger = {git = "https://github.com/BartvanWoesik/MyLogger.git"}
 model-forge = {git = "https://github.com/BartvanWoesik/model-forge.git"}
+mkdocs-material = "^9.5.19"
+mkdocs-git-authors-plugin = "^0.8.0"
+mkdocs-table-reader-plugin = "^2.1.0"
 
 [tool.pytest.ini_options]
 markers = [
