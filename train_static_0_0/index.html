@@ -1,0 +1,2208 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../train_person_2/">
+      
+      
+        <link rel="next" href="../train_static_0_1/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.19">
+    
+    
+      
+        <title>Home Credit - Credit Risk Model Stability</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.66ac8b77.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#data-profile-of-applprev_1_0" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Home Credit - Credit Risk Model Stability" class="md-header__button md-logo" aria-label="Home Credit - Credit Risk Model Stability" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Home Credit - Credit Risk Model Stability
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              0
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../contribution/" class="md-tabs__link">
+        
+  
+    
+  
+  Contribution
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../train_applprev_1_0/" class="md-tabs__link">
+          
+  
+  Raw Data
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Home Credit - Credit Risk Model Stability" class="md-nav__button md-logo" aria-label="Home Credit - Credit Risk Model Stability" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Home Credit - Credit Risk Model Stability
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribution/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contribution
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Raw Data
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Raw Data
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    applprev
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
+            <span class="md-nav__icon md-icon"></span>
+            applprev
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_applprev_1_0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    10
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_applprev_1_1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    11
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_applprev_2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    20
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_base/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    base
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    credit_bureau
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            credit_bureau
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_credit_bureau_a_1_0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    a_1_0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_credit_bureau_a_1_1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    a_1_1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_credit_bureau_a_1_2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    a_1_2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_credit_bureau_a_1_3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    a_1_3
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_credit_bureau_a_2_0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    a_2_0
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_credit_bureau_a_2_1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    a_2_1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_credit_bureau_a_2_2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    a_2_2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_credit_bureau_a_2_3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    a_2_3
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_credit_bureau_a_2_4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    a_2_4
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_credit_bureau_a_2_5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    a_2_5
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_credit_bureau_a_2_6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    a_2_6
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_credit_bureau_a_2_7/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    a_2_7
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_credit_bureau_a_2_8/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    a_2_8
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_credit_bureau_a_2_9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    a_2_9
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_credit_bureau_a_2_10/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    a_2_10
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_credit_bureau_b_1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    b_1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_credit_bureau_b_2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    b_2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_debitcard_1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    debitcard
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_deposit_1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    deposit
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_other_1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    other
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_7" id="__nav_3_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    person
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_7">
+            <span class="md-nav__icon md-icon"></span>
+            person
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_person_1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_person_2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_8" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_8" id="__nav_3_8_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    static
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_8">
+            <span class="md-nav__icon md-icon"></span>
+            static
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    0
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    0
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#column-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Column description
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-statistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Statistics
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_static_0_1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_static_cb_0/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_9" id="__nav_3_9_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    tax_registry
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_9">
+            <span class="md-nav__icon md-icon"></span>
+            tax_registry
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_tax_registry_a_1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_tax_registry_b_1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../train_tax_registry_c_1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#column-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      Column description
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-statistics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Statistics
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="data-profile-of-applprev_1_0">Data Profile of Applprev_1_0</h1>
+<h2 id="column-description">Column description</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Variable</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">case_id</td>
+<td style="text-align: left;">Id to merge on</td>
+</tr>
+<tr>
+<td style="text-align: left;">actualdpdtolerance_344P</td>
+<td style="text-align: left;">DPD of client with tolerance.</td>
+</tr>
+<tr>
+<td style="text-align: left;">amtinstpaidbefduel24m_4187115A</td>
+<td style="text-align: left;">Number of instalments paid before due date in the last 24 months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">annuity_780A</td>
+<td style="text-align: left;">Monthly annuity amount.</td>
+</tr>
+<tr>
+<td style="text-align: left;">annuitynextmonth_57A</td>
+<td style="text-align: left;">Next month's amount of annuity.</td>
+</tr>
+<tr>
+<td style="text-align: left;">applicationcnt_361L</td>
+<td style="text-align: left;">Number of applications associated with the same email address as the client.</td>
+</tr>
+<tr>
+<td style="text-align: left;">applications30d_658L</td>
+<td style="text-align: left;">Number of applications made by the client in the last 30 days.</td>
+</tr>
+<tr>
+<td style="text-align: left;">applicationscnt_1086L</td>
+<td style="text-align: left;">Number of applications associated with the same phone number.</td>
+</tr>
+<tr>
+<td style="text-align: left;">applicationscnt_464L</td>
+<td style="text-align: left;">Number of applications made in the last 30 days by other clients with the same employer as the applicant.</td>
+</tr>
+<tr>
+<td style="text-align: left;">applicationscnt_629L</td>
+<td style="text-align: left;">Number of applications with the same employer in the last 7 days.</td>
+</tr>
+<tr>
+<td style="text-align: left;">applicationscnt_867L</td>
+<td style="text-align: left;">Number of applications associated with the same mobile phone.</td>
+</tr>
+<tr>
+<td style="text-align: left;">avgdbddpdlast24m_3658932P</td>
+<td style="text-align: left;">Average days past or before due of payment during the last 24 months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">avgdbddpdlast3m_4187120P</td>
+<td style="text-align: left;">Average days past or before due of payment during the last 3 months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">avgdbdtollast24m_4525197P</td>
+<td style="text-align: left;">Average days of payment before due date within the last 24 months (with tolerance).</td>
+</tr>
+<tr>
+<td style="text-align: left;">avgdpdtolclosure24_3658938P</td>
+<td style="text-align: left;">Average DPD (days past due) with tolerance within the past 24 months from the maximum closure date, assuming that the contract is finished. If the contract is ongoing, the calculation is based on the current date.</td>
+</tr>
+<tr>
+<td style="text-align: left;">avginstallast24m_3658937A</td>
+<td style="text-align: left;">Average instalments paid by the client over the past 24 months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">avglnamtstart24m_4525187A</td>
+<td style="text-align: left;">Average loan amount in the last 24 months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">avgmaxdpdlast9m_3716943P</td>
+<td style="text-align: left;">Average Days Past Due (DPD) of the client in last 9 months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">avgoutstandbalancel6m_4187114A</td>
+<td style="text-align: left;">Average outstanding balance of applicant for the last 6 months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">avgpmtlast12m_4525200A</td>
+<td style="text-align: left;">Average of payments made by the client in the last 12 months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">bankacctype_710L</td>
+<td style="text-align: left;">Type of applicant's bank account.</td>
+</tr>
+<tr>
+<td style="text-align: left;">cardtype_51L</td>
+<td style="text-align: left;">Type of credit card.</td>
+</tr>
+<tr>
+<td style="text-align: left;">clientscnt12m_3712952L</td>
+<td style="text-align: left;">Number of clients that have used the same mobile phone as the applicant in the past 12 months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">clientscnt3m_3712950L</td>
+<td style="text-align: left;">Number of clients who have the same mobile phone number in the last 3 months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">clientscnt6m_3712949L</td>
+<td style="text-align: left;">Total number of clients who have used the same mobile number in the last 6 months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">clientscnt_100L</td>
+<td style="text-align: left;">Number of applications with matching employer's phone and client's.</td>
+</tr>
+<tr>
+<td style="text-align: left;">clientscnt_1022L</td>
+<td style="text-align: left;">Number of clients sharing the same mobile phone.</td>
+</tr>
+<tr>
+<td style="text-align: left;">clientscnt_1071L</td>
+<td style="text-align: left;">Number of applications where the alternative phone number matches that of the client.</td>
+</tr>
+<tr>
+<td style="text-align: left;">clientscnt_1130L</td>
+<td style="text-align: left;">Number of applications where client's phone number matches the alternative phone contact.</td>
+</tr>
+<tr>
+<td style="text-align: left;">clientscnt_136L</td>
+<td style="text-align: left;">Number of applications associated with same email address as client's email.</td>
+</tr>
+<tr>
+<td style="text-align: left;">clientscnt_157L</td>
+<td style="text-align: left;">Number of clients whose employer has the same phone number as the client.</td>
+</tr>
+<tr>
+<td style="text-align: left;">clientscnt_257L</td>
+<td style="text-align: left;">Number of clients that share an alternative phone number with the applicant.</td>
+</tr>
+<tr>
+<td style="text-align: left;">clientscnt_304L</td>
+<td style="text-align: left;">Number of clients with the same phone number.</td>
+</tr>
+<tr>
+<td style="text-align: left;">clientscnt_360L</td>
+<td style="text-align: left;">Number of clients that have the same alternative phone number and employer's phone number.</td>
+</tr>
+<tr>
+<td style="text-align: left;">clientscnt_493L</td>
+<td style="text-align: left;">Number of clients with matching phone numbers for both the employer and the client.</td>
+</tr>
+<tr>
+<td style="text-align: left;">clientscnt_533L</td>
+<td style="text-align: left;">Number of clients with same client's and alternative's phone number</td>
+</tr>
+<tr>
+<td style="text-align: left;">clientscnt_887L</td>
+<td style="text-align: left;">Number of clients sharing the same employer's phone number.</td>
+</tr>
+<tr>
+<td style="text-align: left;">clientscnt_946L</td>
+<td style="text-align: left;">Number of clients with matching mobile and employer's number.</td>
+</tr>
+<tr>
+<td style="text-align: left;">cntincpaycont9m_3716944L</td>
+<td style="text-align: left;">Number of incoming payments in the past 9 months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">cntpmts24_3658933L</td>
+<td style="text-align: left;">Number of months with any incoming payment in last 24 months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">commnoinclast6m_3546845L</td>
+<td style="text-align: left;">Number of communications indicating low income in the last six months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">credamount_770A</td>
+<td style="text-align: left;">Loan amount or credit card limit.</td>
+</tr>
+<tr>
+<td style="text-align: left;">credtype_322L</td>
+<td style="text-align: left;">Type of credit.</td>
+</tr>
+<tr>
+<td style="text-align: left;">currdebt_22A</td>
+<td style="text-align: left;">Current debt amount of the client.</td>
+</tr>
+<tr>
+<td style="text-align: left;">currdebtcredtyperange_828A</td>
+<td style="text-align: left;">Current amount of debt of the applicant.</td>
+</tr>
+<tr>
+<td style="text-align: left;">datefirstoffer_1144D</td>
+<td style="text-align: left;">Date of first customer relationship management (CRM) offer.</td>
+</tr>
+<tr>
+<td style="text-align: left;">datelastinstal40dpd_247D</td>
+<td style="text-align: left;">Date of last instalment that was more than 40 days past due (DPD).</td>
+</tr>
+<tr>
+<td style="text-align: left;">datelastunpaid_3546854D</td>
+<td style="text-align: left;">Date of the last unpaid instalment.</td>
+</tr>
+<tr>
+<td style="text-align: left;">daysoverduetolerancedd_3976961L</td>
+<td style="text-align: left;">Number of days that past after the due date (with tolerance).</td>
+</tr>
+<tr>
+<td style="text-align: left;">deferredmnthsnum_166L</td>
+<td style="text-align: left;">Number of deferred months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">disbursedcredamount_1113A</td>
+<td style="text-align: left;">Disbursed credit amount after consolidation.</td>
+</tr>
+<tr>
+<td style="text-align: left;">disbursementtype_67L</td>
+<td style="text-align: left;">Type of disbursement.</td>
+</tr>
+<tr>
+<td style="text-align: left;">downpmt_116A</td>
+<td style="text-align: left;">Amount of downpayment.</td>
+</tr>
+<tr>
+<td style="text-align: left;">dtlastpmtallstes_4499206D</td>
+<td style="text-align: left;">Date of last payment made by the applicant.</td>
+</tr>
+<tr>
+<td style="text-align: left;">eir_270L</td>
+<td style="text-align: left;">Interest rate.</td>
+</tr>
+<tr>
+<td style="text-align: left;">equalitydataagreement_891L</td>
+<td style="text-align: left;">Flag indicating sudden changes in client's social-demographic data (e.g. education, family status, housing type).</td>
+</tr>
+<tr>
+<td style="text-align: left;">equalityempfrom_62L</td>
+<td style="text-align: left;">Flag indicating a sudden change in the client's length of employment.</td>
+</tr>
+<tr>
+<td style="text-align: left;">firstclxcampaign_1125D</td>
+<td style="text-align: left;">Date of the client's first campaign.</td>
+</tr>
+<tr>
+<td style="text-align: left;">firstdatedue_489D</td>
+<td style="text-align: left;">Date of the first due date.</td>
+</tr>
+<tr>
+<td style="text-align: left;">homephncnt_628L</td>
+<td style="text-align: left;">Number of distinct home phones on client's application.</td>
+</tr>
+<tr>
+<td style="text-align: left;">inittransactionamount_650A</td>
+<td style="text-align: left;">Initial transaction amount of the credit application.</td>
+</tr>
+<tr>
+<td style="text-align: left;">inittransactioncode_186L</td>
+<td style="text-align: left;">Transaction type of the initial credit transaction.</td>
+</tr>
+<tr>
+<td style="text-align: left;">interestrate_311L</td>
+<td style="text-align: left;">The interest rate of the active credit contract.</td>
+</tr>
+<tr>
+<td style="text-align: left;">interestrategrace_34L</td>
+<td style="text-align: left;">Interest rate during the grace period.</td>
+</tr>
+<tr>
+<td style="text-align: left;">isbidproduct_1095L</td>
+<td style="text-align: left;">Flag indicating if the product is a cross-sell.</td>
+</tr>
+<tr>
+<td style="text-align: left;">isbidproductrequest_292L</td>
+<td style="text-align: left;">Flag indicating if the product is a cross-sell.</td>
+</tr>
+<tr>
+<td style="text-align: left;">isdebitcard_729L</td>
+<td style="text-align: left;">Flag indicating if the product is a debit card.</td>
+</tr>
+<tr>
+<td style="text-align: left;">lastactivateddate_801D</td>
+<td style="text-align: left;">Contract activation date for previous applications.</td>
+</tr>
+<tr>
+<td style="text-align: left;">lastapplicationdate_877D</td>
+<td style="text-align: left;">Date of previous customer's application.</td>
+</tr>
+<tr>
+<td style="text-align: left;">lastapprcommoditycat_1041M</td>
+<td style="text-align: left;">Commodity category of the last loan applications made by the applicant.</td>
+</tr>
+<tr>
+<td style="text-align: left;">lastapprcommoditytypec_5251766M</td>
+<td style="text-align: left;">Commodity type of the last application.</td>
+</tr>
+<tr>
+<td style="text-align: left;">lastapprcredamount_781A</td>
+<td style="text-align: left;">Credit amount from the client's last application.</td>
+</tr>
+<tr>
+<td style="text-align: left;">lastapprdate_640D</td>
+<td style="text-align: left;">Date of approval on client's most recent previous application.</td>
+</tr>
+<tr>
+<td style="text-align: left;">lastcancelreason_561M</td>
+<td style="text-align: left;">Cancellation reason of the last application.</td>
+</tr>
+<tr>
+<td style="text-align: left;">lastdelinqdate_224D</td>
+<td style="text-align: left;">Date of the last delinquency occurrence.</td>
+</tr>
+<tr>
+<td style="text-align: left;">lastdependentsnum_448L</td>
+<td style="text-align: left;">Number of dependents in the client's last loan application.</td>
+</tr>
+<tr>
+<td style="text-align: left;">lastotherinc_902A</td>
+<td style="text-align: left;">Amount of other income reported by the client in their last application.</td>
+</tr>
+<tr>
+<td style="text-align: left;">lastotherlnsexpense_631A</td>
+<td style="text-align: left;">Monthly expenses on other loans from the last application.</td>
+</tr>
+<tr>
+<td style="text-align: left;">lastrejectcommoditycat_161M</td>
+<td style="text-align: left;">Category of commodity in the applicant's last rejected application.</td>
+</tr>
+<tr>
+<td style="text-align: left;">lastrejectcommodtypec_5251769M</td>
+<td style="text-align: left;">Commodity type of the last rejected application.</td>
+</tr>
+<tr>
+<td style="text-align: left;">lastrejectcredamount_222A</td>
+<td style="text-align: left;">Credit amount on last rejected application.</td>
+</tr>
+<tr>
+<td style="text-align: left;">lastrejectdate_50D</td>
+<td style="text-align: left;">Date of most recent rejected application by the applicant.</td>
+</tr>
+<tr>
+<td style="text-align: left;">lastrejectreason_759M</td>
+<td style="text-align: left;">Reason for rejection on the most recent rejected application.</td>
+</tr>
+<tr>
+<td style="text-align: left;">lastrejectreasonclient_4145040M</td>
+<td style="text-align: left;">Reason for the client's last loan rejection.</td>
+</tr>
+<tr>
+<td style="text-align: left;">lastrepayingdate_696D</td>
+<td style="text-align: left;">Date of the last payment made by the applicant.</td>
+</tr>
+<tr>
+<td style="text-align: left;">lastst_736L</td>
+<td style="text-align: left;">Status of the client's previous credit application.</td>
+</tr>
+<tr>
+<td style="text-align: left;">maininc_215A</td>
+<td style="text-align: left;">Client's primary income amount.</td>
+</tr>
+<tr>
+<td style="text-align: left;">mastercontrelectronic_519L</td>
+<td style="text-align: left;">Flag indicating the existence of the master contract for the client.</td>
+</tr>
+<tr>
+<td style="text-align: left;">mastercontrexist_109L</td>
+<td style="text-align: left;">Flag indicating whether or not the applicant has an existing master contract.</td>
+</tr>
+<tr>
+<td style="text-align: left;">maxannuity_159A</td>
+<td style="text-align: left;">Maximum annuity previously obtained by client.</td>
+</tr>
+<tr>
+<td style="text-align: left;">maxannuity_4075009A</td>
+<td style="text-align: left;">Maximal annuity offered to the client in the current application.</td>
+</tr>
+<tr>
+<td style="text-align: left;">maxdbddpdlast1m_3658939P</td>
+<td style="text-align: left;">Maximum number of days past due in the last month. A negative value indicates the number of days before the due date.</td>
+</tr>
+<tr>
+<td style="text-align: left;">maxdbddpdtollast12m_3658940P</td>
+<td style="text-align: left;">Maximum number of days past due in last 12 months. A negative value implies days before due date.</td>
+</tr>
+<tr>
+<td style="text-align: left;">maxdbddpdtollast6m_4187119P</td>
+<td style="text-align: left;">Maximum number of days past due in last 6 months. This predictor takes the value as a negative number when it represents days before due date.</td>
+</tr>
+<tr>
+<td style="text-align: left;">maxdebt4_972A</td>
+<td style="text-align: left;">Maximal principal debt of the client in the history older than 4 months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">maxdpdfrom6mto36m_3546853P</td>
+<td style="text-align: left;">Maximum Days Past Due (DPD) in the period ranging from 6 to 36 months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">maxdpdinstldate_3546855D</td>
+<td style="text-align: left;">Date of instalment on which client was most days past due.</td>
+</tr>
+<tr>
+<td style="text-align: left;">maxdpdinstlnum_3546846P</td>
+<td style="text-align: left;">Instalment number of which client was most days past due.</td>
+</tr>
+<tr>
+<td style="text-align: left;">maxdpdlast12m_727P</td>
+<td style="text-align: left;">Maximum days past due in the past 12 months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">maxdpdlast24m_143P</td>
+<td style="text-align: left;">Maximal days past due in the last 24 months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">maxdpdlast3m_392P</td>
+<td style="text-align: left;">Maximum number of days past due in last 3 months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">maxdpdlast6m_474P</td>
+<td style="text-align: left;">Maximum days past due in the last 6 months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">maxdpdlast9m_1059P</td>
+<td style="text-align: left;">Maximum days past due in last 9 months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">maxdpdtolerance_374P</td>
+<td style="text-align: left;">Maximum number of days past due (with tolerance).</td>
+</tr>
+<tr>
+<td style="text-align: left;">maxinstallast24m_3658928A</td>
+<td style="text-align: left;">Maximum instalment in the last 24 months</td>
+</tr>
+<tr>
+<td style="text-align: left;">maxlnamtstart6m_4525199A</td>
+<td style="text-align: left;">Maximum loan amount started in the last 6 months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">maxoutstandbalancel12m_4187113A</td>
+<td style="text-align: left;">Maximum outstanding balance in the last 12 months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">maxpmtlast3m_4525190A</td>
+<td style="text-align: left;">Maximum payment made by the client in the last 3 months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">mindbddpdlast24m_3658935P</td>
+<td style="text-align: left;">Minimum days past due (or days before due) in last 24 months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">mindbdtollast24m_4525191P</td>
+<td style="text-align: left;">Minimum days before due in last 24 months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">mobilephncnt_593L</td>
+<td style="text-align: left;">Number of persons with the same mobile phone number.</td>
+</tr>
+<tr>
+<td style="text-align: left;">monthsannuity_845L</td>
+<td style="text-align: left;">Monthly annuity amount for the applicant.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numactivecreds_622L</td>
+<td style="text-align: left;">Number of active credits.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numactivecredschannel_414L</td>
+<td style="text-align: left;">Number of active credits.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numactiverelcontr_750L</td>
+<td style="text-align: left;">Number of active revolving credits.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numcontrs3months_479L</td>
+<td style="text-align: left;">Number of contracts in last 3 months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numincomingpmts_3546848L</td>
+<td style="text-align: left;">Number of incoming payments.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numinstlallpaidearly3d_817L</td>
+<td style="text-align: left;">Number of instalments paid at least 3 days prior to their due date.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numinstls_657L</td>
+<td style="text-align: left;">Number of instalments.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numinstlsallpaid_934L</td>
+<td style="text-align: left;">Number of paid instalments.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numinstlswithdpd10_728L</td>
+<td style="text-align: left;">Number of instalments that were overdue for 10 or more days.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numinstlswithdpd5_4187116L</td>
+<td style="text-align: left;">Number of instalments that were overdue by at least 5 days.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numinstlswithoutdpd_562L</td>
+<td style="text-align: left;">Number of instalments that were not past due date.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numinstmatpaidtearly2d_4499204L</td>
+<td style="text-align: left;">Number of instalments that have been paid more than 2 days before their due date.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numinstpaid_4499208L</td>
+<td style="text-align: left;">Number of paid instalments.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numinstpaidearly3d_3546850L</td>
+<td style="text-align: left;">Number of instalments paid more than three days before the due date.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numinstpaidearly3dest_4493216L</td>
+<td style="text-align: left;">Number of instalments that have been paid more than 3 days in advance of the due date.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numinstpaidearly5d_1087L</td>
+<td style="text-align: left;">Number of instalments paid more than 5 days prior to the due date.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numinstpaidearly5dest_4493211L</td>
+<td style="text-align: left;">Number of instalments that were paid more than 5 days before the due date.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numinstpaidearly5dobd_4499205L</td>
+<td style="text-align: left;">Number of installments paid more than 5 days prior to the due date.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numinstpaidearly_338L</td>
+<td style="text-align: left;">Number of installments paid prior to the due date.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numinstpaidearlyest_4493214L</td>
+<td style="text-align: left;">Number of instalments paid before the due date.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numinstpaidlastcontr_4325080L</td>
+<td style="text-align: left;">Number of paid installments from the client's last contract.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numinstpaidlate1d_3546852L</td>
+<td style="text-align: left;">Number of instalments paid more than 1 day past their due date.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numinstregularpaid_973L</td>
+<td style="text-align: left;">Number of fully paid regular installments in the client's previous contracts.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numinstregularpaidest_4493210L</td>
+<td style="text-align: left;">Number of fully paid regular installments on clients' previous contracts.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numinsttopaygr_769L</td>
+<td style="text-align: left;">Number of unpaid instalments.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numinsttopaygrest_4493213L</td>
+<td style="text-align: left;">Number of unpaid instalments.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numinstunpaidmax_3546851L</td>
+<td style="text-align: left;">Maximum number of unpaid instalments.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numinstunpaidmaxest_4493212L</td>
+<td style="text-align: left;">Maximum number of unpaid instalments.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numnotactivated_1143L</td>
+<td style="text-align: left;">Number of non-activated credits.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numpmtchanneldd_318L</td>
+<td style="text-align: left;">Number of previous loan contracts for the applicant that had direct debit as payment channel.</td>
+</tr>
+<tr>
+<td style="text-align: left;">numrejects9m_859L</td>
+<td style="text-align: left;">Number of credit applications that were rejected in the last 9 months.</td>
+</tr>
+<tr>
+<td style="text-align: left;">opencred_647L</td>
+<td style="text-align: left;">Number of active loans from the previous application.</td>
+</tr>
+<tr>
+<td style="text-align: left;">paytype1st_925L</td>
+<td style="text-align: left;">Type of first payment of the client.</td>
+</tr>
+<tr>
+<td style="text-align: left;">paytype_783L</td>
+<td style="text-align: left;">Type of payment.</td>
+</tr>
+<tr>
+<td style="text-align: left;">payvacationpostpone_4187118D</td>
+<td style="text-align: left;">Date of last payment holiday instalment.</td>
+</tr>
+<tr>
+<td style="text-align: left;">pctinstlsallpaidearl3d_427L</td>
+<td style="text-align: left;">Percentage of installments paid at least 3 days prior to the due date.</td>
+</tr>
+<tr>
+<td style="text-align: left;">pctinstlsallpaidlat10d_839L</td>
+<td style="text-align: left;">Percentage of installments that were paid 10 or more days after the due date.</td>
+</tr>
+<tr>
+<td style="text-align: left;">pctinstlsallpaidlate1d_3546856L</td>
+<td style="text-align: left;">Percentage of installments that are paid 1 or more days after the due date.</td>
+</tr>
+<tr>
+<td style="text-align: left;">pctinstlsallpaidlate4d_3546849L</td>
+<td style="text-align: left;">Percentage of installments that were paid 4 or more days past their due date.</td>
+</tr>
+<tr>
+<td style="text-align: left;">pctinstlsallpaidlate6d_3546844L</td>
+<td style="text-align: left;">Percentage of installments that were paid 6 or more days past their due date.</td>
+</tr>
+<tr>
+<td style="text-align: left;">pmtnum_254L</td>
+<td style="text-align: left;">Total number of loan payments made by the client.</td>
+</tr>
+<tr>
+<td style="text-align: left;">posfpd10lastmonth_333P</td>
+<td style="text-align: left;">Average FPD10 (Share of contracts with first installment past due more than 10 days) from point of sales that processed contract in the previous month.</td>
+</tr>
+<tr>
+<td style="text-align: left;">posfpd30lastmonth_3976960P</td>
+<td style="text-align: left;">Average FPD30 (Share of contracts with first installment past due more than 30 days) from point of sales that processed contract in the previous month.</td>
+</tr>
+<tr>
+<td style="text-align: left;">posfstqpd30lastmonth_3976962P</td>
+<td style="text-align: left;">Average FSTPD30 (share of contracts with first, second, or third installment past due more than 30 days) from point of sale that processed contract in the last month.</td>
+</tr>
+<tr>
+<td style="text-align: left;">previouscontdistrict_112M</td>
+<td style="text-align: left;">Contact district of the client's previous approved application.</td>
+</tr>
+<tr>
+<td style="text-align: left;">price_1097A</td>
+<td style="text-align: left;">Credit price.</td>
+</tr>
+<tr>
+<td style="text-align: left;">sellerplacecnt_915L</td>
+<td style="text-align: left;">Number of sellerplaces where the same client's document was used.</td>
+</tr>
+<tr>
+<td style="text-align: left;">sellerplacescnt_216L</td>
+<td style="text-align: left;">Number of sellerplaces where the same client's mobile phone was used.</td>
+</tr>
+<tr>
+<td style="text-align: left;">sumoutstandtotal_3546847A</td>
+<td style="text-align: left;">Sum of total outstanding amount.</td>
+</tr>
+<tr>
+<td style="text-align: left;">sumoutstandtotalest_4493215A</td>
+<td style="text-align: left;">Sum of total outstanding amount.</td>
+</tr>
+<tr>
+<td style="text-align: left;">totaldebt_9A</td>
+<td style="text-align: left;">Total amount of debt.</td>
+</tr>
+<tr>
+<td style="text-align: left;">totalsettled_863A</td>
+<td style="text-align: left;">Sum of all payments made by the client.</td>
+</tr>
+<tr>
+<td style="text-align: left;">totinstallast1m_4525188A</td>
+<td style="text-align: left;">Total amount of monthly instalments paid in the previous month.</td>
+</tr>
+<tr>
+<td style="text-align: left;">twobodfilling_608L</td>
+<td style="text-align: left;">Type of application process.</td>
+</tr>
+<tr>
+<td style="text-align: left;">typesuite_864L</td>
+<td style="text-align: left;">Persons accompanying the client during the loan application process.</td>
+</tr>
+<tr>
+<td style="text-align: left;">validfrom_1069D</td>
+<td style="text-align: left;">Date since the client has an active campaign.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="data-statistics">Data Statistics</h2>
+<iframe width=2800, height=2000 frameBorder=0 src="../assets/train_static_0_0_report.html"></iframe>
+
+
+
+
+
+
+
+
+  <aside class="md-source-file">
+    
+    
+    
+      
+  
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Contributors">
+      
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4Z"/></svg>
+      
+    </span>
+    <nav>
+      
+        <a href="mailto:43171217+rjjzitman@users.noreply.github.com">RJJZitman</a>
+    </nav>
+  </span>
+
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.tabs.link", "content.code.copy", "navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.dd8806f2.min.js"></script>
+      
+    
+  </body>
+</html>

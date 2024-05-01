@@ -1,0 +1,6 @@
+Variable,Description
+case_id, Id to merge on
+amount_4917619A,Tax deductions amount tracked by the government registry.
+deductiondate_4917603D,Tax deduction date.
+name_4917606M,Name of employer.
+num_group1, 0
